@@ -21,6 +21,5 @@ public class MemberRequest {
                 .password(password)
                 .name(name)
                 .build();
-
     }
 }

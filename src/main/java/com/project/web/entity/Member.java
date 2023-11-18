@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,8 +30,17 @@ public class Member extends BaseTime {
     @Column
     private String name;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Authority> roles = new ArrayList<>();
+
     public void updateMember(String password, String name) {
         this.password = password;
         this.name = name;
+    }
+
+    public void setRoles(List<Authority> role) {
+        this.roles = role;
+        role.forEach(o -> o.setMember(this));
     }
 }
