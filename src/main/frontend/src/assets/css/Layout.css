@@ -1,0 +1,24 @@
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper {
+    position: relative;
+}
+
+.logo-image {
+    width: 100%;
+    height: auto;
+}
+
+.logo-text {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%, 50%);
+    padding: 5px;
+    font-size: 16px;
+    color: black;
+}

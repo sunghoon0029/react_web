@@ -1,12 +1,15 @@
 import React from "react";
-import NavBarElements from "../NavBar/NavBarElements";
-import Footer from "./footer/Footer";
+import NavBar from "./NavBar";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const Layout = ({ children }) => {
 
     return (
         <div>
-            <NavBarElements />
+            <NavBar />
+
+            <Header />
 
             <main>
                 {children}
