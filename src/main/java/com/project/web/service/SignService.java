@@ -1,7 +1,6 @@
 package com.project.web.service;
 
 import com.project.web.dto.request.MemberRequest;
-import com.project.web.dto.response.SignResponse;
 import com.project.web.entity.Authority;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;
@@ -34,30 +33,25 @@ public class SignService {
 
     public boolean join(MemberRequest request) throws Exception {
         try {
-            Member member = Member.builder()
-                    .email(request.getEmail())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .name(request.getName())
-                    .build();
-
+            Member member = request.toEntity(request);
             member.setRoles(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
+            member.setPassword(passwordEncoder.encode(request.getPassword()));
 
             memberRepository.save(member);
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new Exception("잘못된 요청 입니다.");
         }
         return true;
     }
 
     public TokenDTO login(MemberRequest request) throws Exception {
-        Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(() ->
-                new BadCredentialsException("잘못된 계정 정보 입니다."));
+        Member member = memberRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new BadCredentialsException("잘못된 계정 정보 입니다.");
         }
-
         return TokenDTO.builder()
                 .accessToken(jwtProvider.createToken(member.getEmail(), member.getRoles()))
                 .refreshToken(createRefreshToken(member))
@@ -77,13 +71,6 @@ public class SignService {
 
         Long expiration = jwtProvider.getExpiration(accessToken);
         redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
-    }
-
-    public SignResponse findByEmail(String email) throws Exception {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new Exception("계정을 찾을 수 없습니다."));
-
-        return new SignResponse(member);
     }
 
     public String createRefreshToken(Member member) {

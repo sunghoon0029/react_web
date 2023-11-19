@@ -17,14 +17,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -39,28 +36,19 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .cors(c -> {
-                    CorsConfigurationSource source = request -> {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(
-                                List.of("*")
-                        );
-                        config.setAllowedMethods(
-                                List.of("*")
-                        );
-                        return config;
-                    };
-                    c.configurationSource(source);
-                })
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+
                 .authorizeRequests()
                 .antMatchers("/join", "/login", "/logout", "/refresh").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/member/**").hasRole("USER")
+                .antMatchers("/**").hasRole("USER")
                 .anyRequest().denyAll()
                 .and()
+
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)
+
                 .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler() {
                     @Override

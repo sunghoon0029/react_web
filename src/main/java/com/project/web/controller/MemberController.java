@@ -32,6 +32,11 @@ public class MemberController {
         return new ResponseEntity<>(memberService.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<MemberResponse> findByEmail(@RequestParam String email) throws Exception {
+        return new ResponseEntity<>(memberService.findByEmail(email), HttpStatus.OK);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> updateById(@PathVariable Long id,
                                           @RequestBody MemberRequest request) {

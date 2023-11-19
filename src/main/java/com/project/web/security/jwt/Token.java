@@ -10,8 +10,8 @@ import org.springframework.data.redis.core.TimeToLive;
 import javax.persistence.Id;
 import java.util.concurrent.TimeUnit;
 
-@Getter
 @RedisHash("refreshToken")
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

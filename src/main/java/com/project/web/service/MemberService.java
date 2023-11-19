@@ -44,6 +44,14 @@ public class MemberService {
         return response;
     }
 
+    public MemberResponse findByEmail(String email) throws Exception {
+
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new Exception("계정 정보를 찾을 수 없습니다."));
+        MemberResponse response = MemberResponse.toDTO(member);
+
+        return response;
+    }
+
     public boolean updateById(Long id, MemberRequest request) {
 
         Member member = memberRepository.findById(id).get();
