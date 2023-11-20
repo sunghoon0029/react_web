@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -116,4 +118,11 @@ public class SignService {
             throw new Exception("로그인을 시도하세요.");
         }
     }
+
+//    public void addTokenToCookie(HttpServletResponse response, String cookieName, String token) {
+//        Cookie cookie = new Cookie(cookieName, token);
+//        cookie.setSecure(true);
+//        cookie.setHttpOnly(true);
+//        response.addCookie(cookie);
+//    }
 }

@@ -5,6 +5,7 @@ import com.project.web.dto.response.MemberResponse;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,14 +16,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    public boolean save(MemberRequest request) {
-
-        Member member = request.toEntity(request);
-        memberRepository.save(member);
-
-        return true;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     public List<MemberResponse> findAll() {
 
@@ -36,9 +30,10 @@ public class MemberService {
         return memberResponseList;
     }
 
-    public MemberResponse findById(Long id) {
+    public MemberResponse findById(Long id) throws Exception {
 
-        Member member = memberRepository.findById(id).get();
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
         MemberResponse response = MemberResponse.toDTO(member);
 
         return response;
@@ -46,16 +41,18 @@ public class MemberService {
 
     public MemberResponse findByEmail(String email) throws Exception {
 
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new Exception("계정 정보를 찾을 수 없습니다."));
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
         MemberResponse response = MemberResponse.toDTO(member);
 
         return response;
     }
 
-    public boolean updateById(Long id, MemberRequest request) {
+    public boolean updateById(Long id, MemberRequest request) throws Exception {
 
-        Member member = memberRepository.findById(id).get();
-        member.updateMember(request.getPassword(), request.getName());
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+        member.updateMember(passwordEncoder.encode(request.getPassword()), request.getName());
         memberRepository.save(member);
 
         return true;

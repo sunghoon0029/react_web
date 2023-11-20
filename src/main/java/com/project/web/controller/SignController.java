@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SignController {
 
-    private final SignService memberService;
+    private final SignService signService;
 
     @PostMapping("/join")
     public ResponseEntity<Boolean> join(@RequestBody MemberRequest request) throws Exception {
-        return new ResponseEntity<>(memberService.join(request), HttpStatus.OK);
+        return new ResponseEntity<>(signService.join(request), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody MemberRequest request) throws Exception {
-        return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
+        return new ResponseEntity<>(signService.login(request), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestParam  String accessToken, @RequestParam String refreshToken) {
         try {
-            memberService.logout(accessToken, refreshToken);
+            signService.logout(accessToken, refreshToken);
             return ResponseEntity.ok("로그아웃 성공");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 실패" + e.getMessage());
@@ -36,6 +36,6 @@ public class SignController {
 
     @GetMapping("/refresh")
     public ResponseEntity<TokenDTO> refreshAccessToken(@RequestBody TokenDTO token) throws Exception {
-        return new ResponseEntity<>(memberService.refreshAccessToken(token), HttpStatus.OK);
+        return new ResponseEntity<>(signService.refreshAccessToken(token), HttpStatus.OK);
     }
 }

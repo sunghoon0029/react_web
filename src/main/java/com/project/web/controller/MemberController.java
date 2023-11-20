@@ -17,18 +17,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Boolean> save(@RequestBody MemberRequest request) {
-        return new ResponseEntity<>(memberService.save(request), HttpStatus.OK);
-    }
-
     @GetMapping("/")
-    public List<MemberResponse> findAll() {
+    public List<MemberResponse> findAll() throws Exception {
         return memberService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<MemberResponse> findById(@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(memberService.findById(id), HttpStatus.OK);
     }
 
@@ -39,12 +34,12 @@ public class MemberController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> updateById(@PathVariable Long id,
-                                          @RequestBody MemberRequest request) {
+                                          @RequestBody MemberRequest request) throws Exception {
         return new ResponseEntity<>(memberService.updateById(id, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(memberService.deleteById(id), HttpStatus.OK);
     }
 }

@@ -12,8 +12,6 @@ public class BoardRequest {
 
     private String contents;
 
-    private int hits;
-
     public Board toEntity(BoardRequest request) {
         return Board.builder()
                 .id(id)
