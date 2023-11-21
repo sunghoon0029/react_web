@@ -13,7 +13,7 @@ const Join = () => {
   const [member, setMember] = useState({
     email: '',
     password: '',
-    name: ''
+    name: '',
   });
 
   const { email, password, name } = member;
@@ -27,7 +27,7 @@ const Join = () => {
   };
 
   const saveMember = async () => {
-    await axios.post('http://localhost:8080/member/save', member).then((res) => {
+    await axios.post('http://localhost:8080/join', member).then((res) => {
       alert('가입 완료');
       navigate('/');
     });
