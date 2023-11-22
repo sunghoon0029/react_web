@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequiredArgsConstructor
 public class SignController {
@@ -20,8 +22,12 @@ public class SignController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody MemberRequest request) throws Exception {
-        return new ResponseEntity<>(signService.login(request), HttpStatus.OK);
+    public ResponseEntity<TokenDTO> login(@RequestBody MemberRequest request, HttpServletResponse response) throws Exception {
+
+        TokenDTO tokenDTO = signService.login(request);
+        signService.addRefreshTokenToCookie(tokenDTO.getRefreshToken(), response);
+
+        return new ResponseEntity<>(tokenDTO, HttpStatus.OK);
     }
 
     @PostMapping("/logout")

@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/member/**").hasRole("USER")
                 .antMatchers("/**").hasRole("USER")
-                .anyRequest().denyAll()
+                .anyRequest().authenticated()
                 .and()
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)

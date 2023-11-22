@@ -119,10 +119,11 @@ public class SignService {
         }
     }
 
-//    public void addTokenToCookie(HttpServletResponse response, String cookieName, String token) {
-//        Cookie cookie = new Cookie(cookieName, token);
-//        cookie.setSecure(true);
-//        cookie.setHttpOnly(true);
-//        response.addCookie(cookie);
-//    }
+    public void addRefreshTokenToCookie(String token, HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        response.addCookie(cookie);
+    }
 }
