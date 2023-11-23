@@ -26,11 +26,16 @@ const Join = () => {
     });
   };
 
-  const saveMember = async () => {
-    await axios.post('http://localhost:8080/join', member).then((res) => {
-      alert('가입 완료');
-      navigate('/');
-    });
+  const joinMember = async () => {
+    try {
+      await axios.post('http://localhost:8080/join', member).then((res) => {
+        
+        alert('가입 완료');
+        navigate('/');
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const backToHome = () => {
@@ -74,7 +79,7 @@ const Join = () => {
             />
           </Form.Group>
 
-          <Button variant="primary" onClick={ saveMember }>회원가입</Button>
+          <Button variant="primary" onClick={ joinMember }>회원가입</Button>
           <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
         </Form>
       </Container>

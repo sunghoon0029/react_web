@@ -27,15 +27,13 @@ const Login = () => {
 
   const loginMember = async () => {
     try {
-      const res = await axios.post('http://localhost:8080/login', member, {
-        withCredentials: true,
-      });
-
+      await axios.post('http://localhost:8080/login', member).then((res) => {
       console.log(res.data);
 
       navigate('/');
+      });
     } catch (err) {
-      console.log('error', err);
+      console.log(err);
     }
   };
 
