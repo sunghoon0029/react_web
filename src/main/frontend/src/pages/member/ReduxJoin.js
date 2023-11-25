@@ -27,7 +27,7 @@ const ReduxJoin = () => {
         setPassword(e.target.value);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
         let body = {
@@ -36,14 +36,19 @@ const ReduxJoin = () => {
             password: password,
         };
 
-        dispatch(joinUser(body)).then((res) => {
+        try {
+            const res = await dispatch(joinUser(body));
+
             if (res.payload.success) {
                 alert('회원가입 완료');
                 navigate('/');
             } else {
                 alert('회원가입 실패');
             }
-        });
+        } catch (err) {
+            console.error(err);
+            alert('error');
+        }
     };
 
     const backToHome = () => {

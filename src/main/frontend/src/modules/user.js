@@ -10,17 +10,17 @@ const initalState = {
 // Action
 const JOIN_USER = 'JOIN_USER';
 
-export const joinUser = async (user) => {
+export const joinUser = (user) => async (dispatch) => {
     try {
         const res = await axios.post(USER_URL + 'join', user);
-
-        return {
+        dispatch ({
             type: JOIN_USER,
             payload: res.data,
-        };
-
+        });
+        return res.data;
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        throw err;
     };
 };
 
