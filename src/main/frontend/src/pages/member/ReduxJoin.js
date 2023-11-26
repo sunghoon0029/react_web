@@ -27,27 +27,24 @@ const ReduxJoin = () => {
         setPassword(e.target.value);
     };
 
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
 
-        let body = {
+        const body = {
             name: name,
             email: email,
             password: password,
         };
 
         try {
-            const res = await dispatch(joinUser(body));
+            dispatch(joinUser(body));
 
-            if (res.payload.success) {
-                alert('회원가입 완료');
-                navigate('/');
-            } else {
-                alert('회원가입 실패');
-            }
+            alert('회원가입 완료');
+            navigate('/');
         } catch (err) {
             console.error(err);
-            alert('error');
+
+            alert('회원가입 실패');
         }
     };
 
