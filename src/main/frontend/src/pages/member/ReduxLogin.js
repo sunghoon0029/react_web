@@ -1,50 +1,49 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../../modules/user';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import { loginUser } from '../../modules/user';
 
 import Layout from '../../components/layout/Layout';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
+import { Button } from 'react-bootstrap';
 
-const ReduxJoin = () => {
+const ReduxLogin = () => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const onChangeName = (e) => {
-        setName(e.target.value);
-    };
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
-    };
+    }
     const onChangePassword = (e) => {
         setPassword(e.target.value);
-    };
+    }
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setMessage('Loading...');
 
         let body = {
-            name: name,
             email: email,
             password: password,
         };
 
         try {
-            dispatch(registerUser(body));
+            dispatch(loginUser(body));
 
-            alert('회원가입 완료');
-            navigate('/login');
+            alert('로그인 완료');
+            navigate('/');
         } catch (error) {
             console.error(error);
 
-            alert('회원가입 실패');
+            alert('로그인 실패');
         }
     };
 
@@ -62,7 +61,7 @@ const ReduxJoin = () => {
                         type="email"
                         placeholder="email"
                         value={ email }
-                        onChange={ onChangeEmail }
+                        onChange= { onChangeEmail }
                     />
                 </Form.Group>
 
@@ -70,23 +69,13 @@ const ReduxJoin = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
-                        placeholder="Password"
+                        placeholder="password"
                         value={ password }
-                        onChange={ onChangePassword }
+                        onChange= { onChangePassword }
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <Form.Label>name</Form.Label>
-                    <Form.Control
-                        type="name"
-                        placeholder="name"
-                        value={ name }
-                        onChange={ onChangeName }
-                    />
-                </Form.Group>
-
-                <Button variant="primary" onClick={ onSubmit }>회원가입</Button>
+                <Button variant="primary" onClick={ onSubmit }>로그인</Button>
                 <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
             </Form>
         </Container>
@@ -94,4 +83,4 @@ const ReduxJoin = () => {
   );
 };
 
-export default ReduxJoin;
+export default ReduxLogin;

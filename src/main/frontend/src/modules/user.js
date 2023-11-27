@@ -8,25 +8,44 @@ const initalState = {
 };
 
 // Action
-const JOIN_USER = 'JOIN_USER';
+const REGISTER_USER = 'REGISTER_USER';
+const LOGIN_USER = 'LOGIN_USER';
 
-export const joinUser = (user) => async (dispatch) => {
+export const registerUser = (dataToSubmit) => async dispatch => {
     try {
-        const res = await axios.post(USER_URL + 'join', user);
-        
+        const response = await axios.post(USER_URL + 'join', dataToSubmit);
+
         dispatch ({
-            type: JOIN_USER,
-            payload: res.data,
+            type: REGISTER_USER,
+            payload: response,
         });
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
     };
 };
+
+export const loginUser = (dataToSubmit) => async dispatch => {
+    try {
+        const response = await axios.post(USER_URL + 'login', dataToSubmit);
+
+        dispatch ({
+            type: LOGIN_USER,
+            payload: response,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 // Reducer
 export default function reducer(state = initalState, action) {
     switch (action.type) {
-        case JOIN_USER:
+        case REGISTER_USER:
+            return {
+                ...state,
+                user: action.payload,
+            };
+        case LOGIN_USER:
             return {
                 ...state,
                 user: action.payload,
