@@ -16,9 +16,6 @@ const ReduxLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState('');
-
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     }
@@ -28,23 +25,15 @@ const ReduxLogin = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        setMessage('Loading...');
 
         let body = {
             email: email,
             password: password,
         };
 
-        try {
-            dispatch(loginUser(body));
+        dispatch(loginUser(body));
 
-            alert('로그인 완료');
-            navigate('/');
-        } catch (error) {
-            console.error(error);
-
-            alert('로그인 실패');
-        }
+        // navigate('/');
     };
 
     const backToHome = () => {

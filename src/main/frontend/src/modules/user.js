@@ -27,15 +27,25 @@ export const registerUser = (dataToSubmit) => async dispatch => {
 export const loginUser = (dataToSubmit) => async dispatch => {
     try {
         const response = await axios.post(USER_URL + 'login', dataToSubmit);
+        console.log(response.data);
+
+        localStorage.setItem('accessToken', response.data.accessToken);
+        const token = localStorage.getItem('accessToken');
+        
+        console.log('accessToken:', token);
 
         dispatch ({
             type: LOGIN_USER,
             payload: response,
         });
+
+        alert('로그인 성공');
     } catch (error) {
         console.error(error);
+
+        alert('로그인 실패');
     }
-}
+};
 
 // Reducer
 export default function reducer(state = initalState, action) {
