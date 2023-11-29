@@ -33,7 +33,7 @@ const ReduxLogin = () => {
 
         dispatch(loginUser(body));
 
-        // navigate('/');
+        navigate('/');
     };
 
     const backToHome = () => {

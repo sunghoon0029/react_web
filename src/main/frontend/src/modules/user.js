@@ -5,11 +5,13 @@ const USER_URL = 'http://localhost:8080/';
 // Inital State
 const initalState = {
     user: null,
+    isLoggedIn: false,
 };
 
 // Action
 const REGISTER_USER = 'REGISTER_USER';
 const LOGIN_USER = 'LOGIN_USER';
+const LOGOUT_USER = 'LOGOUT_USER';
 
 export const registerUser = (dataToSubmit) => async dispatch => {
     try {
@@ -47,6 +49,12 @@ export const loginUser = (dataToSubmit) => async dispatch => {
     }
 };
 
+export const logoutUser = () => dispatch => {
+    dispatch ({
+        type: LOGOUT_USER,
+    });
+}
+
 // Reducer
 export default function reducer(state = initalState, action) {
     switch (action.type) {
@@ -59,7 +67,14 @@ export default function reducer(state = initalState, action) {
             return {
                 ...state,
                 user: action.payload,
+                isLoggedIn: true,
             };
+        case LOGOUT_USER:
+            return {
+                ...state,
+                user: null,
+                isLoggedIn: false,
+            }
         default:
             return state;
     };
