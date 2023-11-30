@@ -72,11 +72,6 @@ public class JwtProvider {
 
     public boolean validateToken(String token) {
         try {
-            if (!token.substring(0, "REARER ".length()).equalsIgnoreCase("BEARER ")) {
-                return false;
-            } else {
-                token = token.split(" ")[1].trim();
-            }
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()

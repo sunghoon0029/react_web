@@ -62,7 +62,7 @@ public class SignService {
 
     public void logout(String accessToken, String refreshToken) throws Exception {
         if (!jwtProvider.validateToken(accessToken)) {
-            throw new Exception("로그아웃 : 유효하지 않은 토큰입니다.");
+            throw new Exception("로그아웃 : 유효하지 않은 인증정보 입니다.");
         }
 
         Authentication authentication = jwtProvider.getAuthentication(accessToken);

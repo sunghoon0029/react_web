@@ -22,7 +22,12 @@ public class SignController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody MemberRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<TokenDTO> login(@RequestBody MemberRequest request) throws Exception {
+        return new ResponseEntity<>(signService.login(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/cookie/login")
+    public ResponseEntity<TokenDTO> cookieLogin(@RequestBody MemberRequest request, HttpServletResponse response) throws Exception {
 
         TokenDTO tokenDTO = signService.login(request);
         signService.addRefreshTokenToCookie(tokenDTO.getRefreshToken(), response);
@@ -30,8 +35,8 @@ public class SignController {
         return new ResponseEntity<>(tokenDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestParam  String accessToken, @RequestParam String refreshToken) {
+    @DeleteMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization")  String accessToken, @RequestHeader("RefreshToken") String refreshToken) {
         try {
             signService.logout(accessToken, refreshToken);
             return ResponseEntity.ok("로그아웃 성공");
