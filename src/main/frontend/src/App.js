@@ -4,6 +4,7 @@ import ReduxJoin from './pages/member/ReduxJoin';
 import BoardList from './pages/board/BoardList';
 import ReduxLogin from './pages/member/ReduxLogin';
 import Test from './pages/Test';
+import BoardSave from './pages/board/BoardSave';
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
           <Route path='/join' element={ <ReduxJoin /> } />
           <Route path='/login' element={ <ReduxLogin /> } />
           <Route path='/board' element={ <BoardList /> } />
+          <Route path='/board/save' element={ <BoardSave /> } />
           <Route path='/test' element={ <Test /> } />
         </Routes>
       </Router>

@@ -38,22 +38,34 @@ export const loginUser = (dataToSubmit) => async dispatch => {
 
         dispatch ({
             type: LOGIN_USER,
-            payload: response,
+            payload: response.data,
         });
-
-        alert('로그인 성공');
     } catch (error) {
         console.error(error);
-
-        alert('로그인 실패');
     }
 };
 
 export const logoutUser = () => dispatch => {
+
+    localStorage.removeItem('accessToken');
+
     dispatch ({
         type: LOGOUT_USER,
     });
 }
+
+// export const logoutUser = () => async dispatch => {
+//     try {
+//         await axios.delete(USER_URL + 'logout');
+//         localStorage.removeItem('accessToken');
+
+//         dispatch ({
+//             type: LOGOUT_USER,
+//         })
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
 // Reducer
 export default function reducer(state = initalState, action) {
