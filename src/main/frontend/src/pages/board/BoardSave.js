@@ -1,12 +1,83 @@
-import React from 'react'
-import Layout from '../../components/layout/Layout'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+import { createBoard } from '../../modules/board';
+
+import Layout from '../../components/layout/Layout';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button';
+
 
 const BoardSave = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
+
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
+  }
+  const onChangeContents = (e) => {
+    setContents(e.target.value);
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    let body = {
+      title: title,
+      contents: contents,
+    };
+
+    try {
+      dispatch(createBoard(body));
+
+      alert('게시글 작성 완료');
+      navigate('/board');
+    } catch (error) {
+      console.error(error);
+
+      alert('게시글 작성 실패');
+    }
+  };
+
+  const backToBoardList = () => {
+    navigate('/board');
+  };
+
   return (
     <Layout>
-        <div>BoardSave</div>
+      <Container>
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+                type="title"
+                placeholder="title"
+                value={ title }
+                onChange={ onChangeTitle }
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Contents</Form.Label>
+            <Form.Control
+                type="contents"
+                placeholder="contents"
+                value={ contents }
+                onChange={ onChangeContents }
+            />
+          </Form.Group>
+
+          <Button variant="primary" onClick={ onSubmit }>게시글 작성</Button>
+          <Button variant="primary" onClick={ backToBoardList }>게시글 목록</Button>
+        </Form>
+      </Container>
     </Layout>
-  )
-}
+  );
+};
 
 export default BoardSave;
