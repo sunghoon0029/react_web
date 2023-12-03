@@ -8,8 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 
-
-const BoardSave = () => {
+const BoardWrite = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ const BoardSave = () => {
     setContents(e.target.value);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     let body = {
@@ -32,7 +31,7 @@ const BoardSave = () => {
       contents: contents,
     };
 
-    try {
+    try { 
       dispatch(createBoard(body));
 
       alert('게시글 작성 완료');
@@ -80,4 +79,4 @@ const BoardSave = () => {
   );
 };
 
-export default BoardSave;
+export default BoardWrite;

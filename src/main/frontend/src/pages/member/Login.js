@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap';
 
-const ReduxLogin = () => {
+const Login = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -72,4 +72,4 @@ const ReduxLogin = () => {
   );
 };
 
-export default ReduxLogin;
+export default Login;

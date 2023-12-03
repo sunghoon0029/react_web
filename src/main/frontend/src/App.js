@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import ReduxJoin from './pages/member/ReduxJoin';
+import Join from './pages/member/Join';
+import Login from './pages/member/Login';
 import BoardList from './pages/board/BoardList';
-import ReduxLogin from './pages/member/ReduxLogin';
-import Test from './pages/Test';
-import BoardSave from './pages/board/BoardSave';
+import BoardWrite from './pages/board/BoardWrite';
 
 const App = () => {
 
@@ -13,11 +12,12 @@ const App = () => {
       <Router>
         <Routes>
           <Route path='/' element={ <Home /> } />
-          <Route path='/join' element={ <ReduxJoin /> } />
-          <Route path='/login' element={ <ReduxLogin /> } />
+
+          <Route path='/join' element={ <Join /> } />
+          <Route path='/login' element={ <Login /> } />
+
           <Route path='/board' element={ <BoardList /> } />
-          <Route path='/board/save' element={ <BoardSave /> } />
-          <Route path='/test' element={ <Test /> } />
+          <Route path='/board/write' element={ <BoardWrite /> } />
         </Routes>
       </Router>
     </div>

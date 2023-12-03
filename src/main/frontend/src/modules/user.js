@@ -9,9 +9,19 @@ const initalState = {
 };
 
 // Action
+const LOCAL_STORAGE = 'LOCAL_STORAGE';
 const REGISTER_USER = 'REGISTER_USER';
 const LOGIN_USER = 'LOGIN_USER';
 const LOGOUT_USER = 'LOGOUT_USER';
+
+export const localStorageCheck = () => dispatch => {
+    const token = localStorage.getItem('accessToken');
+    console.log('accessToken:', token);
+
+    dispatch ({
+        type: LOCAL_STORAGE,
+    });
+};
 
 export const registerUser = (dataToSubmit) => async dispatch => {
     try {
@@ -70,6 +80,11 @@ export const logoutUser = () => dispatch => {
 // Reducer
 export default function reducer(state = initalState, action) {
     switch (action.type) {
+        case LOCAL_STORAGE:
+            return {
+                ...state,
+                user: action.payload,
+            };
         case REGISTER_USER:
             return {
                 ...state,
