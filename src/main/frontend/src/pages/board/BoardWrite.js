@@ -64,7 +64,8 @@ const BoardWrite = () => {
           <Form.Group className="mb-3">
             <Form.Label>Contents</Form.Label>
             <Form.Control
-                type="contents"
+                as="textarea"
+                rows={5}
                 placeholder="contents"
                 value={ contents }
                 onChange={ onChangeContents }

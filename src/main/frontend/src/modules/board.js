@@ -33,7 +33,13 @@ export const createBoard = (dataToSubmit) => async dispatch => {
 
 export const boardList = () => async dispatch => {
     try {
-        const response = await axios.get(BOARD_URL);
+        const accessToken = localStorage.getItem('accessToken');
+
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
+
+        const response = await axios.get(BOARD_URL, { headers });
 
         console.log(response);
 
