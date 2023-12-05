@@ -11,6 +11,7 @@ const initalState = {
 // Action
 const CREATE_BOARD = 'CREATE_BOARD';
 const BOARD_LIST = 'BOARD_LIST';
+const GET_BOARD = 'GET_BOARD';
 
 export const createBoard = (dataToSubmit) => async dispatch => {
     try {
@@ -52,6 +53,21 @@ export const boardList = () => async dispatch => {
     };
 };
 
+export const getBoard = (id) => async dispatch => {
+    try {
+        const response = await axios.get(BOARD_URL + `${id}`);
+
+        console.log(response);
+
+        dispatch ({
+            type: GET_BOARD,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
 // Reducer
 export default function reducer(state = initalState, action) {
     switch (action.type) {
@@ -64,6 +80,11 @@ export default function reducer(state = initalState, action) {
             return {
                 ...state,
                 boardList: action.payload,
+            };
+        case GET_BOARD:
+            return {
+                ...state,
+                board: action.payload,
             };
         default:
             return state;

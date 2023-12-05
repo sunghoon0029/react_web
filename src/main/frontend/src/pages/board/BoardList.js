@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Layout from '../../components/layout/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
 import { boardList } from '../../modules/board';
 
@@ -22,25 +22,23 @@ const BoardList = () => {
 
   useEffect(() => {
     dispatch(boardList());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Layout>
-      <div className="mt-4">
-        {boardData && boardData.length > 0 ? (
-          boardData.map((board) => (
-            <Card key={board.id} className="mb-3">
-              <Card.Body>
+      <div>
+        {boardData.boardList.map((board) => (
+          <Card key={board.id}>
+            <Card.Body>
+              <Link to={`/board/${board.id}`}>
                 <Card.Title>{board.title}</Card.Title>
-                <Card.Text>{board.contents}</Card.Text>
-              </Card.Body>
-            </Card>
-          ))
-        ) : (
-          <p>작성된 게시글이 없습니다.</p>
-        )}
+              </Link>
+              <Card.Text>{board.contents}</Card.Text>
+              <p className="text-muted">작성일자: {new Date(board.createdTime).toLocaleString()}</p>
+            </Card.Body>
+          </Card>
+        ))}
       </div>
-
       <Button variant="primary" onClick={ moveToWrite }>게시글 작성</Button>
       <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
     </Layout>
