@@ -16,6 +16,9 @@ const Join = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [birth, setBirth] = useState('');
+    const [gender, setGender] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     const onChangeName = (e) => {
         setName(e.target.value);
@@ -26,6 +29,15 @@ const Join = () => {
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     };
+    const onChangeBirth = (e) => {
+        setBirth(e.target.value);
+    };
+    const onChangeGender = (e) => {
+        setGender(e.target.value);
+    };
+    const onChangePhoneNumber = (e) => {
+        setPhoneNumber(e.target.value);
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -34,6 +46,9 @@ const Join = () => {
             name: name,
             email: email,
             password: password,
+            birth: birth,
+            gender: gender,
+            phoneNumber: phoneNumber,
         };
 
         try {
@@ -57,17 +72,17 @@ const Join = () => {
         <Container>
             <Form>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>이메일</Form.Label>
                     <Form.Control
                         type="email"
-                        placeholder="email"
+                        placeholder="Email"
                         value={ email }
                         onChange={ onChangeEmail }
                     />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>비밀번호</Form.Label>
                     <Form.Control
                         type="password"
                         placeholder="Password"
@@ -77,12 +92,45 @@ const Join = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>name</Form.Label>
+                    <Form.Label>이름</Form.Label>
                     <Form.Control
                         type="name"
-                        placeholder="name"
+                        placeholder="Name"
                         value={ name }
                         onChange={ onChangeName }
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Label>생년월일</Form.Label>
+                    <Form.Control
+                        type="date"
+                        placeholder="Birth Date"
+                        value={ birth }
+                        onChange={ onChangeBirth }
+                    />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Label>성별</Form.Label>
+                    <Form.Control
+                        as="select"
+                        value={ gender }
+                        onChange={ onChangeGender }
+                    >
+                        <option value="">선택</option>
+                        <option value="Male">남자</option>
+                        <option value="Female">여자</option>
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                    <Form.Label>휴대전화번호</Form.Label>
+                    <Form.Control
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={ phoneNumber }
+                        onChange={ onChangePhoneNumber }
                     />
                 </Form.Group>
 

@@ -1,7 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+
 import Join from './pages/member/Join';
 import Login from './pages/member/Login';
+import MyPage from './pages/member/MyPage';
+import Profile from './pages/member/Profile';
+import ProfileEdit from './pages/member/ProfileEdit';
+
 import BoardList from './pages/board/BoardList';
 import BoardWrite from './pages/board/BoardWrite';
 import BoardDetail from './pages/board/BoardDetail';
@@ -16,6 +21,9 @@ const App = () => {
 
           <Route path='/join' element={ <Join /> } />
           <Route path='/login' element={ <Login /> } />
+          <Route path='/mypage' element={ <MyPage /> } />
+          <Route path='/mypage/profile' element={ <Profile /> } />
+          <Route path='/mypage/profile-edit' element={ <ProfileEdit /> } />
 
           <Route path='/board' element={ <BoardList /> } />
           <Route path='/board/write' element={ <BoardWrite /> } />

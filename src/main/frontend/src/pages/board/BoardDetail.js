@@ -29,6 +29,7 @@ const BoardDetail = () => {
                     <h2>{boardData.board.title}</h2>
                     <p>{boardData.board.contents}</p>
                     <p>작성일자: {new Date(boardData.board.createdTime).toLocaleString()}</p>
+                    <p>조회수: {boardData.board.hits}</p>
                 </>
             ) : (
                 <div>Loading...</div>

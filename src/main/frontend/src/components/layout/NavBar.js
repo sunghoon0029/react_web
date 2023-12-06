@@ -33,7 +33,7 @@ const NavBar = () => {
               </>
             ) : (
               <>
-                <Nav.Link href='/mypage'>내정보</Nav.Link>
+                <Nav.Link href='/mypage'>마이페이지</Nav.Link>
                 <Nav.Link onClick={ logout }>로그아웃</Nav.Link>
               </>
             )}

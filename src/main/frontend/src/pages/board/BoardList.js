@@ -35,6 +35,7 @@ const BoardList = () => {
               </Link>
               <Card.Text>{board.contents}</Card.Text>
               <p className="text-muted">작성일자: {new Date(board.createdTime).toLocaleString()}</p>
+              <p className="text-muted">조회수: {board.hits}</p>
             </Card.Body>
           </Card>
         ))}
