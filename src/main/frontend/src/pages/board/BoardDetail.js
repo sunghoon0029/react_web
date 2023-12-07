@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
 import { getBoard } from '../../modules/board';
+
 import Layout from '../../components/layout/Layout';
 import { Button } from 'react-bootstrap';
 

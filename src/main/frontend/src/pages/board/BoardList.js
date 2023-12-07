@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import Layout from '../../components/layout/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Card } from 'react-bootstrap';
 import { boardList } from '../../modules/board';
+
+import Layout from '../../components/layout/Layout';
+import { Button, Card } from 'react-bootstrap';
 
 const BoardList = () => {
 

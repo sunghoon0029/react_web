@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../modules/user';
 
 import Layout from '../../components/layout/Layout';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
+import { Button, Container, Form } from 'react-bootstrap';
 
 const Join = () => {
 
@@ -135,7 +133,7 @@ const Join = () => {
                 </Form.Group>
 
                 <Button variant="primary" onClick={ onSubmit }>회원가입</Button>
-                <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
+                <Button variant="primary" onClick={ backToHome }>회원가입 취소</Button>
             </Form>
         </Container>
     </Layout>

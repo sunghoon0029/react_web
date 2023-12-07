@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../../modules/user';
 
 import Layout from '../../components/layout/Layout';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form'
-import { Button } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 
 const Login = () => {
 
@@ -36,8 +34,8 @@ const Login = () => {
         navigate('/');
     };
 
-    const backToHome = () => {
-        navigate('/');
+    const moveToJoin = () => {
+        navigate('/join');
     };
 
   return (
@@ -65,7 +63,7 @@ const Login = () => {
                 </Form.Group>
 
                 <Button variant="primary" onClick={ onSubmit }>로그인</Button>
-                <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
+                <Button variant="primary" onClick={ moveToJoin }>회원가입</Button>
             </Form>
         </Container>
     </Layout>

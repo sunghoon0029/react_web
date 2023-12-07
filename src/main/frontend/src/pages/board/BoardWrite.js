@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { createBoard } from '../../modules/board';
 
 import Layout from '../../components/layout/Layout';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button';
+import { Button, Container, Form } from 'react-bootstrap';
 
 const BoardWrite = () => {
 

@@ -1,20 +1,12 @@
 import React from 'react'
-import '../../assets/css/Layout.css'
-import { Link } from 'react-router-dom';
-import Logo from '../../assets/images/gray.png';
+import '../../assets/css/Header.css';
+import Logo from '../../assets/images/벼랑위의포뇨.png';
 
 const Header = () => {
 
   return (
     <header>
-        <div className="logo-container">
-            <Link to={"/"}>
-              <div className="logo-wrapper">
-                <img src={ Logo } className="logo-image" alt="Logo" />
-                <span className="logo-text">Main Logo</span>
-              </div>
-            </Link>
-        </div>
+      <img src={ Logo } className='logo-image' alt="Logo" />
     </header>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
+import { localStorageCheck } from "../modules/user";
+
 import Layout from "../components/layout/Layout";
 import { useDispatch } from "react-redux";
-import { localStorageCheck } from "../modules/user";
 
 const Home = () => {
 
