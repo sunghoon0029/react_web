@@ -21,7 +21,7 @@ export const createBoard = (dataToSubmit) => async dispatch => {
             Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.post(BOARD_URL + 'save', dataToSubmit, { headers });
+        const response = await axios.post(BOARD_URL + 'save', dataToSubmit, {headers});
 
         dispatch ({
             type: CREATE_BOARD,
@@ -40,7 +40,7 @@ export const boardList = () => async dispatch => {
             Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.get(BOARD_URL, { headers });
+        const response = await axios.get(BOARD_URL, {headers});
 
         console.log(response);
 

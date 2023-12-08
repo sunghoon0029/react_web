@@ -13,6 +13,7 @@ const LOCAL_STORAGE = 'LOCAL_STORAGE';
 const REGISTER_USER = 'REGISTER_USER';
 const LOGIN_USER = 'LOGIN_USER';
 const LOGOUT_USER = 'LOGOUT_USER';
+const GET_USER = 'GET_USER';
 
 export const localStorageCheck = () => dispatch => {
     const token = localStorage.getItem('accessToken');
@@ -20,6 +21,7 @@ export const localStorageCheck = () => dispatch => {
 
     dispatch ({
         type: LOCAL_STORAGE,
+        payload: token,
     });
 };
 
@@ -29,7 +31,7 @@ export const registerUser = (dataToSubmit) => async dispatch => {
 
         dispatch ({
             type: REGISTER_USER,
-            payload: response,
+            payload: response.data,
         });
     } catch (error) {
         console.error(error);
@@ -41,10 +43,11 @@ export const loginUser = (dataToSubmit) => async dispatch => {
         const response = await axios.post(USER_URL + 'login', dataToSubmit);
         console.log(response.data);
 
-        localStorage.setItem('accessToken', response.data.accessToken);
-        const token = localStorage.getItem('accessToken');
-        
-        console.log('accessToken:', token);
+        const accessToken = response.data.accessToken;
+        localStorage.setItem('accessToken', accessToken);
+
+        // console.log(axios.defaults.headers.common['Authorization']);
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
         dispatch ({
             type: LOGIN_USER,
@@ -64,18 +67,25 @@ export const logoutUser = () => dispatch => {
     });
 }
 
-// export const logoutUser = () => async dispatch => {
-//     try {
-//         await axios.delete(USER_URL + 'logout');
-//         localStorage.removeItem('accessToken');
+export const getUser = (id) => async dispatch => {
+    try {
+        const accessToken = localStorage.getItem('accessToken');
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
 
-//         dispatch ({
-//             type: LOGOUT_USER,
-//         })
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
+        const response = await axios.get(USER_URL + `member/${id}`);
+
+        console.log(response);
+
+        dispatch ({
+            type: GET_USER,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
 
 // Reducer
 export default function reducer(state = initalState, action) {
@@ -101,6 +111,11 @@ export default function reducer(state = initalState, action) {
                 ...state,
                 user: null,
                 isLoggedIn: false,
+            }
+        case GET_USER:
+            return {
+                ...state,
+                user: action.payload,
             }
         default:
             return state;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { createBoard } from '../../modules/board';
 
@@ -10,15 +10,26 @@ const BoardWrite = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const user = useSelector(state => state.auth.user);
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
+  const [member, setMember] = useState('');
+
+  // useEffect(() => {
+  //   if (user) {
+  //     setMember(user.username);
+  //   }
+  // }, [user]);
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   }
   const onChangeContents = (e) => {
     setContents(e.target.value);
+  }
+  const onChangeMember = (e) => {
+    setMember(e.target.value);
   }
 
   const onSubmit = async (e) => {
@@ -27,6 +38,7 @@ const BoardWrite = () => {
     let body = {
       title: title,
       contents: contents,
+      member: member,
     };
 
     try { 
@@ -67,6 +79,16 @@ const BoardWrite = () => {
                 placeholder="contents"
                 value={ contents }
                 onChange={ onChangeContents }
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>member</Form.Label>
+            <Form.Control
+                type="member"
+                placeholder="member"
+                value={ member }
+                onChange={ onChangeMember }
             />
           </Form.Group>
 

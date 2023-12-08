@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../assets/css/Footer.css';
 import { Col, Container, Row } from 'react-bootstrap';
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-light text-dark fixed-bottom">
+    <footer className="bg-light text-dark">
       <Container>
         <Row className="py-3">
           <Col md={6}>
