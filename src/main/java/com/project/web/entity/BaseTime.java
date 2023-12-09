@@ -17,9 +17,9 @@ public class BaseTime {
 
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(insertable = false)
-    private LocalDateTime updatedTime;
+    private LocalDateTime updatedAt;
 }

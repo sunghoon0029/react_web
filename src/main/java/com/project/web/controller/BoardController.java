@@ -2,13 +2,12 @@ package com.project.web.controller;
 
 import com.project.web.dto.request.BoardRequest;
 import com.project.web.dto.response.BoardResponse;
+import com.project.web.entity.Member;
 import com.project.web.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,28 +16,38 @@ public class BoardController {
 
     private final BoardService boardService;
 
+//    @PostMapping("/save")
+//    public ResponseEntity<Boolean> save(@RequestBody BoardRequest request) throws Exception {
+//        return ResponseEntity.ok(boardService.save(request));
+//    }
+
     @PostMapping("/save")
-    public ResponseEntity<Boolean> save(BoardRequest request) {
-        return new ResponseEntity<>(boardService.save(request), HttpStatus.OK);
+    public ResponseEntity<BoardResponse> write(@RequestBody BoardRequest request,
+                                               @AuthenticationPrincipal Member member) {
+
+        System.out.println("Received member: " + member);
+
+        return ResponseEntity.ok(boardService.write(request, member));
     }
 
-    @GetMapping("/")
-    public List<BoardResponse> findAll() {
-        return boardService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<BoardResponse> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(boardService.findById(id), HttpStatus.OK);
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<List<BoardResponse>> findAll() throws Exception {
+//        return ResponseEntity.ok(boardService.findAll());
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<BoardResponse> findById(@PathVariable Long id) throws Exception {
+//        return ResponseEntity.ok(boardService.findById(id));
+//    }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Boolean> updateById(@PathVariable Long id, @RequestBody BoardRequest request) {
-        return new ResponseEntity<>(boardService.updateById(id, request), HttpStatus.OK);
+    public ResponseEntity<Boolean> updateById(@PathVariable Long id,
+                                              @RequestBody BoardRequest request) throws Exception {
+        return ResponseEntity.ok(boardService.updateById(id, request));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
-        return new ResponseEntity<>(boardService.deleteById(id), HttpStatus.OK);
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) throws Exception {
+        return ResponseEntity.ok(boardService.deleteById(id));
     }
 }

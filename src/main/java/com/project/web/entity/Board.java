@@ -28,8 +28,17 @@ public class Board extends BaseTime {
     @Column
     private int hits;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     public void updateBoard(String title, String contents) {
         this.title = title;
         this.contents = contents;
+    }
+
+    public void setMapping(Member member) {
+        this.member = member;
+        member.getBoards().add(this);
     }
 }

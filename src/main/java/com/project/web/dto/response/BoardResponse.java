@@ -13,22 +13,22 @@ import java.time.LocalDateTime;
 public class BoardResponse {
 
     private Long id;
-
     private String title;
-
     private String contents;
+    private int hits;
+    private String member;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    private LocalDateTime createdTime;
-
-    private LocalDateTime updatedTime;
-
-    public static BoardResponse toDTO(Board board) {
+    public static BoardResponse toDTO(Board board, String member) {
         return BoardResponse.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
-                .createdTime(board.getCreatedTime())
-                .updatedTime(board.getUpdatedTime())
+                .hits(board.getHits())
+                .member(member)
+                .createdAt(board.getCreatedAt())
+                .updatedAt(board.getUpdatedAt())
                 .build();
     }
 }
