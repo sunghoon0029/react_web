@@ -1,4 +1,4 @@
-package com.project.web.dto.request;
+package com.project.web.dto.request.board;
 
 import com.project.web.entity.Board;
 import lombok.Getter;

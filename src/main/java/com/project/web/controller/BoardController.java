@@ -1,13 +1,17 @@
 package com.project.web.controller;
 
-import com.project.web.dto.request.BoardRequest;
-import com.project.web.dto.response.BoardResponse;
-import com.project.web.entity.Member;
+import com.project.web.dto.request.board.BoardRequest;
+import com.project.web.dto.response.board.BoardDetailResponse;
+import com.project.web.dto.response.board.BoardListResponse;
+import com.project.web.dto.response.board.BoardWriteResponse;
+import com.project.web.security.CustomUserDetails;
 import com.project.web.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,29 +20,21 @@ public class BoardController {
 
     private final BoardService boardService;
 
-//    @PostMapping("/save")
-//    public ResponseEntity<Boolean> save(@RequestBody BoardRequest request) throws Exception {
-//        return ResponseEntity.ok(boardService.save(request));
-//    }
-
     @PostMapping("/save")
-    public ResponseEntity<BoardResponse> write(@RequestBody BoardRequest request,
-                                               @AuthenticationPrincipal Member member) {
-
-        System.out.println("Received member: " + member);
-
-        return ResponseEntity.ok(boardService.write(request, member));
+    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+        return ResponseEntity.ok(boardService.save(request, member));
     }
 
-//    @GetMapping("/")
-//    public ResponseEntity<List<BoardResponse>> findAll() throws Exception {
-//        return ResponseEntity.ok(boardService.findAll());
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<BoardResponse> findById(@PathVariable Long id) throws Exception {
-//        return ResponseEntity.ok(boardService.findById(id));
-//    }
+    @GetMapping("/")
+    public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
+        return ResponseEntity.ok(boardService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BoardDetailResponse> findById(@PathVariable Long id) throws Exception {
+        return ResponseEntity.ok(boardService.findById(id));
+    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> updateById(@PathVariable Long id,
