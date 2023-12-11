@@ -1,7 +1,6 @@
-package com.project.web.dto.response;
+package com.project.web.dto.response.member;
 
 import com.project.web.entity.Member;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,20 +8,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class MemberResponse {
 
     private Long id;
-
     private String email;
-
     private String password;
-
     private String name;
-
-    private LocalDateTime createdTime;
-
-    private LocalDateTime updatedTime;
+    private String birth;
+    private String gender;
+    private String phoneNumber;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static MemberResponse toDTO(Member member) {
         return MemberResponse.builder()
@@ -30,8 +26,11 @@ public class MemberResponse {
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .name(member.getName())
-                .createdTime(member.getCreatedTime())
-                .updatedTime(member.getUpdatedTime())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .phoneNumber(member.getPhoneNumber())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
                 .build();
     }
 }

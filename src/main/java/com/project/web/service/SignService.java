@@ -1,6 +1,6 @@
 package com.project.web.service;
 
-import com.project.web.dto.request.MemberRequest;
+import com.project.web.dto.request.member.MemberRequest;
 import com.project.web.entity.Authority;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;

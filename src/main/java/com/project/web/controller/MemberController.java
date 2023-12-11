@@ -1,7 +1,7 @@
 package com.project.web.controller;
 
-import com.project.web.dto.request.MemberRequest;
-import com.project.web.dto.response.MemberResponse;
+import com.project.web.dto.request.member.MemberRequest;
+import com.project.web.dto.response.member.MemberResponse;
 import com.project.web.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class MemberController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> updateById(@PathVariable Long id,
-                                          @RequestBody MemberRequest request) throws Exception {
+                                              @RequestBody MemberRequest request) throws Exception {
         return new ResponseEntity<>(memberService.updateById(id, request), HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package com.project.web.controller;
 
-import com.project.web.dto.request.MemberRequest;
+import com.project.web.dto.request.member.MemberRequest;
 import com.project.web.security.jwt.TokenDTO;
 import com.project.web.service.SignService;
 import lombok.RequiredArgsConstructor;

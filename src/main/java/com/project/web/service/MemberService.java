@@ -1,7 +1,7 @@
 package com.project.web.service;
 
-import com.project.web.dto.request.MemberRequest;
-import com.project.web.dto.response.MemberResponse;
+import com.project.web.dto.request.member.MemberRequest;
+import com.project.web.dto.response.member.MemberResponse;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,11 @@ public class MemberService {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
-        member.updateMember(passwordEncoder.encode(request.getPassword()), request.getName());
+        member.updateMember(passwordEncoder.encode(request.getPassword()),
+                request.getName(),
+                request.getBirth(),
+                request.getGender(),
+                request.getPhoneNumber());
         memberRepository.save(member);
 
         return true;

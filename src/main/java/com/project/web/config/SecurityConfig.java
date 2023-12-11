@@ -42,9 +42,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/join", "/login", "/logout", "/refresh").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/member/**").hasRole("USER")
                 .antMatchers("/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers("/**").permitAll()
+//                .anyRequest().authenticated()
                 .and()
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class)

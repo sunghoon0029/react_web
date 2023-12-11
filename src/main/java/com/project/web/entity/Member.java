@@ -30,9 +30,21 @@ public class Member extends BaseTime {
     @Column
     private String name;
 
+    @Column
+    private String birth;
+
+    @Column
+    private String gender;
+
+    @Column
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> boards = new ArrayList<>();
 
     public void setRoles(List<Authority> role) {
         this.roles = role;
@@ -43,8 +55,11 @@ public class Member extends BaseTime {
         this.password = password;
     }
 
-    public void updateMember(String password, String name) {
+    public void updateMember(String password, String name, String birth, String gender, String phoneNumber) {
         this.password = password;
         this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -1,4 +1,4 @@
-package com.project.web.dto.request;
+package com.project.web.dto.request.member;
 
 import com.project.web.entity.Member;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import lombok.Getter;
 public class MemberRequest {
 
     private Long id;
-
     private String email;
-
     private String password;
-
     private String name;
+    private String birth;
+    private String gender;
+    private String phoneNumber;
 
     public Member toEntity(MemberRequest request) {
         return Member.builder()
@@ -20,6 +20,9 @@ public class MemberRequest {
                 .email(email)
                 .password(password)
                 .name(name)
+                .birth(birth)
+                .gender(gender)
+                .phoneNumber(phoneNumber)
                 .build();
     }
 }
