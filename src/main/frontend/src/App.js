@@ -10,6 +10,7 @@ import ProfileEdit from './pages/member/ProfileEdit';
 import BoardList from './pages/board/BoardList';
 import BoardWrite from './pages/board/BoardWrite';
 import BoardDetail from './pages/board/BoardDetail';
+import BoardUpdate from './pages/board/BoardUpdate';
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path='/board' element={ <BoardList /> } />
           <Route path='/board/write' element={ <BoardWrite /> } />
           <Route path='/board/:id' element={ <BoardDetail /> } />
+          <Route path='/board/update/:id' element={ <BoardUpdate /> } />
         </Routes>
       </Router>
     </div>

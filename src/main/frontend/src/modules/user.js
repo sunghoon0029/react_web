@@ -74,7 +74,7 @@ export const getUser = (id) => async dispatch => {
             Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await axios.get(USER_URL + `member/${id}`);
+        const response = await axios.get(USER_URL + `member/${id}`, {headers});
 
         console.log(response);
 
@@ -111,12 +111,12 @@ export default function reducer(state = initalState, action) {
                 ...state,
                 user: null,
                 isLoggedIn: false,
-            }
+            };
         case GET_USER:
             return {
                 ...state,
                 user: action.payload,
-            }
+            };
         default:
             return state;
     };

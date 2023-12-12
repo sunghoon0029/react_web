@@ -12,15 +12,17 @@ const initalState = {
 const CREATE_BOARD = 'CREATE_BOARD';
 const BOARD_LIST = 'BOARD_LIST';
 const GET_BOARD = 'GET_BOARD';
+const UPDATE_BOARD = 'UPDATE_BOARD';
+const DELETE_BOARD = 'DELETE_BOARD';
+
+const accessToken = localStorage.getItem('accessToken');
+
+const headers = {
+    Authorization: `Bearer ${accessToken}`
+};
 
 export const createBoard = (dataToSubmit) => async dispatch => {
     try {
-        const accessToken = localStorage.getItem('accessToken');
-
-        const headers = {
-            Authorization: `Bearer ${accessToken}`
-        };
-
         const response = await axios.post(BOARD_URL + 'save', dataToSubmit, {headers});
 
         dispatch ({
@@ -34,13 +36,7 @@ export const createBoard = (dataToSubmit) => async dispatch => {
 
 export const boardList = () => async dispatch => {
     try {
-        const accessToken = localStorage.getItem('accessToken');
-
-        const headers = {
-            Authorization: `Bearer ${accessToken}`
-        };
-
-        const response = await axios.get(BOARD_URL, {headers});
+        const response = await axios.get(BOARD_URL);
 
         console.log(response);
 
@@ -68,6 +64,32 @@ export const getBoard = (id) => async dispatch => {
     };
 };
 
+export const updateBoard = (id, dataToSubmit) => async dispatch => {
+    try {
+        const response = await axios.put(BOARD_URL + `update/${id}`, dataToSubmit, {headers});
+
+        dispatch ({
+            type: UPDATE_BOARD,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
+export const deleteBoard = (id) => async dispatch => {
+    try {
+        const response = await axios.delete(BOARD_URL + `delete/${id}`, {headers});
+
+        dispatch ({
+            type: DELETE_BOARD,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
 // Reducer
 export default function reducer(state = initalState, action) {
     switch (action.type) {
@@ -86,6 +108,16 @@ export default function reducer(state = initalState, action) {
                 ...state,
                 board: action.payload,
             };
+        case UPDATE_BOARD:
+            return {
+                ...state,
+                board: action.payload,
+            };
+        case DELETE_BOARD:
+            return {
+                ...state,
+                board: action.payload,
+            }
         default:
             return state;
     };
