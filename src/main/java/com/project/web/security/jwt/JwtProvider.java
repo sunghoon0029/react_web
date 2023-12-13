@@ -24,6 +24,7 @@ import java.util.List;
 public class JwtProvider {
 
     private final CustomUserDetailsService userDetailsService;
+    private final RedisUtil redisUtil;
 
     @Value("${jwt.secret.key}")
     private String secret;
@@ -82,6 +83,9 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
 
+            if (redisUtil.hasKeyBlackList(token)) {
+                return false;
+            }
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;

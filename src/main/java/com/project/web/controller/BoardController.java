@@ -38,8 +38,9 @@ public class BoardController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Boolean> updateById(@PathVariable Long id,
-                                              @RequestBody BoardRequest request) throws Exception {
-        return ResponseEntity.ok(boardService.updateById(id, request));
+                                              @RequestBody BoardRequest request,
+                                              @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+        return ResponseEntity.ok(boardService.updateById(id, request, member));
     }
 
     @DeleteMapping("/delete/{id}")

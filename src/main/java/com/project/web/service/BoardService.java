@@ -12,6 +12,7 @@ import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +58,18 @@ public class BoardService {
         return response;
     }
 
-    public boolean updateById(Long id, BoardRequest request) throws Exception {
+    public boolean updateById(Long id, BoardRequest request, CustomUserDetails member) throws Exception {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new Exception("게시글 정보를 찾을 수 없습니다."));
+
+        Member loggedInMember = memberRepository.findByEmail(member.getUsername())
+                        .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+
+        if (!board.getMember().equals(loggedInMember)) {
+            throw  new AccessDeniedException("사용자가 일치 하지 않습니다.");
+        }
+
         board.updateBoard(request.getTitle(), request.getContents());
         boardRepository.save(board);
 

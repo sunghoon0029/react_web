@@ -4,10 +4,7 @@ import com.project.web.dto.request.member.MemberRequest;
 import com.project.web.entity.Authority;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;
-import com.project.web.security.jwt.JwtProvider;
-import com.project.web.security.jwt.Token;
-import com.project.web.security.jwt.TokenDTO;
-import com.project.web.security.jwt.TokenRepository;
+import com.project.web.security.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +17,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -32,6 +28,7 @@ public class SignService {
     private final TokenRepository tokenRepository;
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
+    private final RedisUtil redisUtil;
 
     public boolean join(MemberRequest request) throws Exception {
         try {
@@ -68,11 +65,11 @@ public class SignService {
         Authentication authentication = jwtProvider.getAuthentication(accessToken);
 
         if (redisTemplate.opsForValue().get(authentication.getName()) != null) {
-            redisTemplate.delete(authentication.getName());
+            redisUtil.delete(authentication.getName());
         }
 
         Long expiration = jwtProvider.getExpiration(accessToken);
-        redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+        redisUtil.setBlackList(accessToken, "logout", expiration);
     }
 
     public String createRefreshToken(Member member) {
