@@ -54,6 +54,7 @@ const BoardDetail = () => {
                 <div>Loading...</div>
             )}
         </div>
+
         <Button variant="primary" onClick={ backToBoardList }>게시글 목록</Button>
         <Button variant="primary" onClick={ moveToUpdate }>게시글 수정</Button>
         <Button variant="danger" onClick={ onDeleteBoard }>게시글 삭제</Button>

@@ -36,7 +36,7 @@ export const createBoard = (dataToSubmit) => async dispatch => {
 
 export const boardList = () => async dispatch => {
     try {
-        const response = await axios.get(BOARD_URL);
+        const response = await axios.get(BOARD_URL, {headers});
 
         console.log(response);
 
@@ -51,7 +51,7 @@ export const boardList = () => async dispatch => {
 
 export const getBoard = (id) => async dispatch => {
     try {
-        const response = await axios.get(BOARD_URL + `${id}`);
+        const response = await axios.get(BOARD_URL + `${id}`, {headers});
 
         console.log(response);
 

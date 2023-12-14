@@ -15,6 +15,12 @@ const LOGIN_USER = 'LOGIN_USER';
 const LOGOUT_USER = 'LOGOUT_USER';
 const GET_USER = 'GET_USER';
 
+const accessToken = localStorage.getItem('accessToken');
+
+const headers = {
+    Authorization: `Bearer ${accessToken}`
+};
+
 export const localStorageCheck = () => dispatch => {
     const token = localStorage.getItem('accessToken');
     console.log('accessToken:', token);
@@ -58,22 +64,36 @@ export const loginUser = (dataToSubmit) => async dispatch => {
     }
 };
 
-export const logoutUser = () => dispatch => {
+// export const logoutUser = () => dispatch => {
+//     try {
+//         localStorage.removeItem('accessToken');
 
-    localStorage.removeItem('accessToken');
+//         dispatch ({
+//             type: LOGOUT_USER,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
 
-    dispatch ({
-        type: LOGOUT_USER,
-    });
-}
+export const logoutUser = () => async dispatch => {
+    try {
+        const response = await axios.delete(USER_URL + 'logout', {headers});
+        console.log(response);
+
+        localStorage.removeItem('accessToken');
+
+        dispatch ({
+            type: LOGOUT_USER,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 export const getUser = (id) => async dispatch => {
     try {
-        const accessToken = localStorage.getItem('accessToken');
-        const headers = {
-            Authorization: `Bearer ${accessToken}`
-        };
-
         const response = await axios.get(USER_URL + `member/${id}`, {headers});
 
         console.log(response);
