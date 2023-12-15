@@ -10,6 +10,8 @@ import com.project.web.repository.BoardRepository;
 import com.project.web.repository.MemberRepository;
 import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -42,6 +44,17 @@ public class BoardService {
         List<BoardListResponse> boardListResponseList = new ArrayList<>();
 
         for (Board board: boardList) {
+            boardListResponseList.add(BoardListResponse.toDTO(board, board.getMember().getName()));
+        }
+
+        return boardListResponseList;
+    }
+
+    public List<BoardListResponse> paging(Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        List<BoardListResponse> boardListResponseList = new ArrayList<>();
+
+        for (Board board : boardPage) {
             boardListResponseList.add(BoardListResponse.toDTO(board, board.getMember().getName()));
         }
 

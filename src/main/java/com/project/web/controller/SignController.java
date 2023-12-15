@@ -4,6 +4,7 @@ import com.project.web.dto.request.member.MemberRequest;
 import com.project.web.security.jwt.TokenDTO;
 import com.project.web.service.SignService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +36,40 @@ public class SignController {
         return new ResponseEntity<>(tokenDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization")  String accessToken, @RequestHeader("RefreshToken") String refreshToken) {
+//    @PostMapping("/logout")
+//    public ResponseEntity<Void> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String header) {
+//        String accessToken = extractAccessToken(header);
+//        try {
+//            signService.logout(accessToken);
+//            return  new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//    }
+//
+//    private String extractAccessToken(String header) {
+//        return header.replace("Bearer ", "");
+//    }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<String> logout(@RequestBody TokenDTO tokenDTO) {
+////        return new ResponseEntity<>(signService.logout(tokenDTO.getAccessToken()), HttpStatus.OK);
+//        try {
+//            signService.logout(tokenDTO.getAccessToken());
+//            return ResponseEntity.ok("로그아웃 완료");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization")  String accessToken) {
+//        return new ResponseEntity<>(signService.logout(accessToken), HttpStatus.OK);
         try {
-            signService.logout(accessToken, refreshToken);
-            return ResponseEntity.ok("로그아웃 성공");
+            signService.logout(accessToken);
+            return ResponseEntity.ok("로그아웃 완료");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 실패" + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

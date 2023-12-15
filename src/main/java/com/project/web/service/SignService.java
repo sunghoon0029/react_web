@@ -4,7 +4,10 @@ import com.project.web.dto.request.member.MemberRequest;
 import com.project.web.entity.Authority;
 import com.project.web.entity.Member;
 import com.project.web.repository.MemberRepository;
-import com.project.web.security.jwt.*;
+import com.project.web.security.jwt.JwtProvider;
+import com.project.web.security.jwt.Token;
+import com.project.web.security.jwt.TokenDTO;
+import com.project.web.security.jwt.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -28,7 +32,6 @@ public class SignService {
     private final TokenRepository tokenRepository;
     private final JwtProvider jwtProvider;
     private final RedisTemplate redisTemplate;
-    private final RedisUtil redisUtil;
 
     public boolean join(MemberRequest request) throws Exception {
         try {
@@ -57,7 +60,8 @@ public class SignService {
                 .build();
     }
 
-    public void logout(String accessToken, String refreshToken) throws Exception {
+    @Transactional
+    public void logout(String accessToken) throws Exception {
         if (!jwtProvider.validateToken(accessToken)) {
             throw new Exception("로그아웃 : 유효하지 않은 인증정보 입니다.");
         }
@@ -65,11 +69,11 @@ public class SignService {
         Authentication authentication = jwtProvider.getAuthentication(accessToken);
 
         if (redisTemplate.opsForValue().get(authentication.getName()) != null) {
-            redisUtil.delete(authentication.getName());
+            redisTemplate.delete(authentication.getName());
         }
 
         Long expiration = jwtProvider.getExpiration(accessToken);
-        redisUtil.setBlackList(accessToken, "logout", expiration);
+        redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
     }
 
     public String createRefreshToken(Member member) {

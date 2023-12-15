@@ -7,6 +7,8 @@ import com.project.web.dto.response.board.BoardWriteResponse;
 import com.project.web.security.CustomUserDetails;
 import com.project.web.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,11 @@ public class BoardController {
     @GetMapping("/")
     public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
         return ResponseEntity.ok(boardService.findAll());
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<List<BoardListResponse>> paging(@PageableDefault(page = 1, size = 10) Pageable pageable) {
+        return ResponseEntity.ok(boardService.paging(pageable));
     }
 
     @GetMapping("/{id}")
