@@ -16,12 +16,12 @@ public class BoardDetailResponse {
     private String member;
     private LocalDateTime createdAt;
 
-    public static BoardDetailResponse toDTO(Board board, String member) {
+    public static BoardDetailResponse toDTO(Board board) {
         return BoardDetailResponse.builder()
                 .title(board.getTitle())
                 .contents(board.getContents())
                 .hits(board.getHits())
-                .member(member)
+                .member(board.getMember().getName())
                 .createdAt(board.getCreatedAt())
                 .build();
     }

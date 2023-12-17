@@ -18,13 +18,13 @@ public class BoardWriteResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static BoardWriteResponse toDTO(Board board, Long member) {
+    public static BoardWriteResponse toDTO(Board board) {
         return BoardWriteResponse.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
                 .hits(board.getHits())
-                .member(member)
+                .member(board.getMember().getId())
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
                 .build();

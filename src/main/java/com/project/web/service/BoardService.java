@@ -4,17 +4,13 @@ import com.project.web.dto.request.board.BoardRequest;
 import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
-import com.project.web.dto.response.board.PageResponse;
 import com.project.web.entity.Board;
 import com.project.web.entity.Member;
 import com.project.web.repository.BoardRepository;
 import com.project.web.repository.MemberRepository;
 import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -38,7 +34,7 @@ public class BoardService {
         board.setMapping(writer);
         Board saveBoard = boardRepository.save(board);
 
-        return BoardWriteResponse.toDTO(saveBoard, writer.getId());
+        return BoardWriteResponse.toDTO(saveBoard);
     }
 
     public List<BoardListResponse> findAll() {
@@ -47,32 +43,17 @@ public class BoardService {
         List<BoardListResponse> boardListResponseList = new ArrayList<>();
 
         for (Board board: boardList) {
-            boardListResponseList.add(BoardListResponse.toDTO(board, board.getMember().getName()));
+            boardListResponseList.add(BoardListResponse.toDTO(board));
         }
 
         return boardListResponseList;
     }
 
-    public PageResponse paging(int page, int size, String sortBy) {
+    public Page<BoardListResponse> page(Pageable pageable) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
         Page<Board> boardPage = boardRepository.findAll(pageable);
 
-        List<Board> boardList = boardPage.getContent();
-        List<BoardListResponse> content = new ArrayList<>();
-
-        for (Board board : boardList) {
-            content.add(BoardListResponse.toDTO(board, board.getMember().getName()));
-        }
-
-        return PageResponse.builder()
-                .content(content)
-                .page(page)
-                .size(size)
-                .totalElements(boardPage.getTotalElements())
-                .totalPages(boardPage.getTotalPages())
-                .last(boardPage.isLast())
-                .build();
+        return boardPage.map(BoardListResponse::toDTO);
     }
 
     public BoardDetailResponse findById(Long id) throws Exception {
@@ -80,7 +61,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new  Exception("게시글 정보를 찾을 수 없습니다."));
         boardRepository.updateHits(board.getId());
-        BoardDetailResponse response = BoardDetailResponse.toDTO(board, board.getMember().getName());
+        BoardDetailResponse response = BoardDetailResponse.toDTO(board);
 
         return response;
     }

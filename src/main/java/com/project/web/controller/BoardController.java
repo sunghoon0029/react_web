@@ -4,10 +4,13 @@ import com.project.web.dto.request.board.BoardRequest;
 import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
-import com.project.web.dto.response.board.PageResponse;
 import com.project.web.security.CustomUserDetails;
 import com.project.web.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +36,8 @@ public class BoardController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<PageResponse> paging(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "5") int size,
-                                               @RequestParam(defaultValue = "id") String sortBy) {
-        return ResponseEntity.ok(boardService.paging(page, size, sortBy));
+    public ResponseEntity<Page<BoardListResponse>> page(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(boardService.page(pageable));
     }
 
     @GetMapping("/{id}")
