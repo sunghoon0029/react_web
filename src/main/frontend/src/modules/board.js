@@ -6,11 +6,13 @@ const BOARD_URL = 'http://localhost:8080/board/';
 const initalState = {
     board: null,
     boardList: [],
+    boardPage: null,
 };
 
 // Action
 const CREATE_BOARD = 'CREATE_BOARD';
 const BOARD_LIST = 'BOARD_LIST';
+const BOARD_PAGE = 'BOARD_PAGE';
 const GET_BOARD = 'GET_BOARD';
 const UPDATE_BOARD = 'UPDATE_BOARD';
 const DELETE_BOARD = 'DELETE_BOARD';
@@ -42,6 +44,21 @@ export const boardList = () => async dispatch => {
 
         dispatch ({
             type: BOARD_LIST,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
+export const boardPage = () => async dispatch => {
+    try {
+        const response = await axios.get(BOARD_URL + 'page', {headers});
+
+        console.log(response);
+
+        dispatch ({
+            type: BOARD_PAGE,
             payload: response.data,
         });
     } catch (error) {
@@ -103,6 +120,11 @@ export default function reducer(state = initalState, action) {
                 ...state,
                 boardList: action.payload,
             };
+        case BOARD_PAGE:
+            return {
+                ...state,
+                boardPage: action.payload,
+            }
         case GET_BOARD:
             return {
                 ...state,

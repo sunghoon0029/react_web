@@ -64,33 +64,33 @@ export const loginUser = (dataToSubmit) => async dispatch => {
     }
 };
 
-// export const logoutUser = () => dispatch => {
-//     try {
-//         localStorage.removeItem('accessToken');
-
-//         dispatch ({
-//             type: LOGOUT_USER,
-//         });
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-
-export const logoutUser = () => async dispatch => {
+export const logoutUser = () => dispatch => {
     try {
-        const response = await axios.delete(USER_URL + 'logout', {headers});
-        console.log(response);
-
         localStorage.removeItem('accessToken');
 
         dispatch ({
             type: LOGOUT_USER,
-            payload: response.data,
         });
     } catch (error) {
         console.error(error);
     }
 };
+
+// export const logoutUser = () => async dispatch => {
+//     try {
+//         const response = await axios.post(USER_URL + 'logout', {headers});
+//         console.log(response);
+
+//         localStorage.removeItem('accessToken');
+
+//         dispatch ({
+//             type: LOGOUT_USER,
+//             payload: response.data,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
 
 export const getUser = (id) => async dispatch => {
     try {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { boardList } from '../../modules/board';
+import { boardList, boardPage } from '../../modules/board';
 
 import Layout from '../../components/layout/Layout';
 import { Button, Card } from 'react-bootstrap';
@@ -22,13 +22,13 @@ const BoardList = () => {
   };
 
   useEffect(() => {
-    dispatch(boardList());
+    dispatch(boardPage());
   }, [dispatch]);
 
   return (
     <Layout>
       <div>
-        {boardData.boardList.map((board) => (
+        {boardData.boardPage && boardData.boardPage.content.map((board) => (
           <Card key={board.id}>
             <Card.Body>
               <Link to={`/board/${board.id}`}>
