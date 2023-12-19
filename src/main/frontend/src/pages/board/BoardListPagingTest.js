@@ -1,45 +1,63 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import Pagination from '../../components/Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { boardPage } from '../../modules/board';
 
-const BoardListPagingTest = () => {
-    const [data, setData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+import Layout from '../../components/layout/Layout';
+import { Button, Card } from 'react-bootstrap';
+import Pagination from '../../components/Paging';
 
-    useEffect(() => {
-        fetchData();
-    }, [currentPage]);
+const BoardList = () => {
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/board/page?page=${currentPage}&size=${pageSize}`);
-            console.log(response.data.content);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-            setData(response.data.content);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  const boardData = useSelector(state => state.board);
 
-    const onPageChange = (newPage) => {
-        setCurrentPage(newPage);
-    };
+  const [page, setPage] = useState(1);
+
+  const moveToWrite = () => {
+    navigate('/board/write');
+  };
+
+  const backToHome = () => {
+    navigate('/');
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  }
+
+  useEffect(() => {
+    dispatch(boardPage(page));
+  }, [dispatch, page]);
 
   return (
-    <div>
-        {data.map((item) => (
-            <div key={item.id}>{item.name}</div>
+    <Layout>
+      <div>
+        {boardData.boardPage && boardData.boardPage.content.map((board) => (
+          <Card key={board.id}>
+            <Card.Body>
+              <Link to={`/board/${board.id}`}>
+                <Card.Title>{board.title}</Card.Title>
+              </Link>
+              <Card.Text>{board.member}</Card.Text>
+              <p className="text-muted">작성일자: {new Date(board.createdAt).toLocaleString()}</p>
+              <p className="text-muted">조회수: {board.hits}</p>
+            </Card.Body>
+          </Card>
         ))}
+      </div>
 
-        <Pagination
-            currentPage={currentPage}
-            pageSize={pageSize}
-            totalItems={100}
-            onPageChange={onPageChange}
-        />
-    </div>
+      <Pagination
+        activePage={page}
+        onChange={handlePageChange}
+      />
+
+      <Button variant="primary" onClick={ moveToWrite }>게시글 작성</Button>
+      <Button variant="primary" onClick={ backToHome }>뒤로가기</Button>
+    </Layout>
   );
 };
 
-export default BoardListPagingTest;
+export default BoardList;
