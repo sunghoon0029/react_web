@@ -5,7 +5,8 @@ import { boardPage } from '../../modules/board';
 
 import Layout from '../../components/layout/Layout';
 import { Button, Card } from 'react-bootstrap';
-import Pagination from '../../components/Paging';
+import Pagination from 'react-js-pagination';
+import '../../assets/css/Pagination.css';
 
 const BoardList = () => {
 
@@ -15,9 +16,6 @@ const BoardList = () => {
   const boardData = useSelector(state => state.board);
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCnt, setTotalCnt] = useState(0);
 
   const moveToWrite = () => {
     navigate('/board/write');
@@ -29,18 +27,16 @@ const BoardList = () => {
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
-  }
+    dispatch(boardPage(newPage - 1));
+  };
 
   useEffect(() => {
-    dispatch(boardPage(page));
+    dispatch(boardPage(page - 1));
   }, [dispatch, page]);
 
-  useEffect(() => {
-    if (boardData.boardPage) {
-      setTotalPages(boardData.boardPage.totalPages);
-      setTotalCnt(boardData.boardPage.totalElements);
-    }
-  }, [boardData.boardPage]);
+  if (!boardData.boardPage) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Layout>
@@ -61,8 +57,8 @@ const BoardList = () => {
 
       <Pagination
         activePage={page}
-        itemsCountPerPage={pageSize}
-        totalItemsCount={totalCnt}
+        itemsCountPerPage={boardData.boardPage.size}
+        totalItemsCount={boardData.boardPage.totalElements}
         pageRangeDisplayed={5}
         prevPageText={"<"}
         nextPageText={">"}

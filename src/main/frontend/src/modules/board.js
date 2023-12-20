@@ -5,7 +5,7 @@ const BOARD_URL = 'http://localhost:8080/board/';
 // Inital State
 const initalState = {
     board: null,
-    boardList: [],
+    // boardList: [],
     boardPage: null,
 };
 
@@ -36,24 +36,27 @@ export const createBoard = (dataToSubmit) => async dispatch => {
     };
 };
 
-export const boardList = () => async dispatch => {
+// export const boardList = () => async dispatch => {
+//     try {
+//         const response = await axios.get(BOARD_URL, {headers});
+
+//         console.log(response);
+
+//         dispatch ({
+//             type: BOARD_LIST,
+//             payload: response.data,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     };
+// };
+
+export const boardPage = (page = 0) => async dispatch => {
     try {
-        const response = await axios.get(BOARD_URL, {headers});
-
-        console.log(response);
-
-        dispatch ({
-            type: BOARD_LIST,
-            payload: response.data,
+        const response = await axios.get(BOARD_URL, {
+            headers,
+            params: { page },
         });
-    } catch (error) {
-        console.error(error);
-    };
-};
-
-export const boardPage = () => async dispatch => {
-    try {
-        const response = await axios.get(BOARD_URL + 'page', {headers});
 
         console.log(response);
 
