@@ -6,44 +6,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "board")
-public class Board extends BaseTime {
+@Table(name = "comment")
+public class Comment extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String title;
-
-    @Column
     private String contents;
-
-    @Column
-    private int hits;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     public void setMember(Member member) {
         this.member = member;
-        member.getBoards().add(this);
+        member.getComments().add(this);
     }
 
-    public void update(String title, String contents) {
-        this.title = title;
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getComments().add(this);
+    }
+
+    public void update(String contents) {
         this.contents = contents;
     }
 }

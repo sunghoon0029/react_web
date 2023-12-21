@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/board")
@@ -30,12 +28,12 @@ public class BoardController {
         return ResponseEntity.ok(boardService.save(request, member));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
-        return ResponseEntity.ok(boardService.findAll());
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
+//        return ResponseEntity.ok(boardService.findAll());
+//    }
 
-    @GetMapping("/page")
+    @GetMapping("/")
     public ResponseEntity<Page<BoardListResponse>> page(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(boardService.page(pageable));
     }

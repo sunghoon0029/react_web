@@ -31,7 +31,7 @@ public class BoardService {
         Member writer = memberRepository.findByEmail(member.getUsername())
                 .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
 
-        board.setMapping(writer);
+        board.setMember(writer);
         Board saveBoard = boardRepository.save(board);
 
         return BoardWriteResponse.toDTO(saveBoard);
@@ -75,10 +75,10 @@ public class BoardService {
                         .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
 
         if (!board.getMember().equals(loggedInMember)) {
-            throw  new AccessDeniedException("사용자가 일치 하지 않습니다.");
+            throw new AccessDeniedException("사용자가 일치 하지 않습니다.");
         }
 
-        board.updateBoard(request.getTitle(), request.getContents());
+        board.update(request.getTitle(), request.getContents());
         boardRepository.save(board);
 
         return true;

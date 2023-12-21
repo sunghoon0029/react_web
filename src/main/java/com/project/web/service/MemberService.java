@@ -52,7 +52,7 @@ public class MemberService {
 
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
-        member.updateMember(passwordEncoder.encode(request.getPassword()),
+        member.update(passwordEncoder.encode(request.getPassword()),
                 request.getName(),
                 request.getBirth(),
                 request.getGender(),

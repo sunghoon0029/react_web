@@ -46,6 +46,9 @@ public class Member extends BaseTime {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     public void setRoles(List<Authority> role) {
         this.roles = role;
         role.forEach(o -> o.setMember(this));
@@ -55,7 +58,7 @@ public class Member extends BaseTime {
         this.password = password;
     }
 
-    public void updateMember(String password, String name, String birth, String gender, String phoneNumber) {
+    public void update(String password, String name, String birth, String gender, String phoneNumber) {
         this.password = password;
         this.name = name;
         this.birth = birth;
