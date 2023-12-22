@@ -56,6 +56,21 @@ public class CommentService {
         return commentListResponseList;
     }
 
+    public List<CommentListResponse> findByBoard(Long id) throws Exception {
+
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new Exception("게시글 정보를 찾을 수 없습니다."));
+
+        List<Comment> commentList = commentRepository.findByBoard(board);
+        List<CommentListResponse> commentListResponseList = new ArrayList<>();
+
+        for (Comment comment: commentList) {
+            commentListResponseList.add(CommentListResponse.toDTO(comment));
+        }
+
+        return commentListResponseList;
+    }
+
     public CommentUpdateResponse updateById(Long id, CommentRequest request, CustomUserDetails member) throws Exception {
 
         Comment comment = commentRepository.findById(id)

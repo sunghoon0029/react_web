@@ -27,19 +27,24 @@ public class CommentController {
         return ResponseEntity.ok(commentService.save(id, request, member));
     }
 
-    @GetMapping("/")
+    @GetMapping("/comment/")
     public ResponseEntity<List<CommentListResponse>> findAll() {
         return ResponseEntity.ok(commentService.findAll());
     }
 
-    @PutMapping("/update/{id}")
+    @GetMapping("/board/{id}/comment/")
+    public ResponseEntity<List<CommentListResponse>> findByBoard(@PathVariable Long id) throws Exception {
+        return ResponseEntity.ok(commentService.findByBoard(id));
+    }
+
+    @PutMapping("/comment/update/{id}")
     public ResponseEntity<CommentUpdateResponse> updateById(@PathVariable Long id,
                                                             @RequestBody CommentRequest request,
                                                             @AuthenticationPrincipal CustomUserDetails member) throws Exception {
         return ResponseEntity.ok(commentService.updateById(id, request, member));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/comment/delete/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(commentService.deleteById(id));
     }
