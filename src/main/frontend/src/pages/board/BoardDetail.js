@@ -5,6 +5,9 @@ import { getBoard, deleteBoard } from '../../modules/board';
 
 import Layout from '../../components/layout/Layout';
 import { Button } from 'react-bootstrap';
+import { commnetList } from '../../modules/comment';
+import CommentList from '../../components/comment/CommentList';
+import CommentForm from '../../components/comment/CommentForm';
 
 const BoardDetail = () => {
 
@@ -13,6 +16,7 @@ const BoardDetail = () => {
     const { id } = useParams();
 
     const boardData = useSelector(state => state.board);
+    const commentDate = useSelector(state => state.comment);
 
     const backToBoardList = () => {
         navigate('/board')
@@ -37,6 +41,7 @@ const BoardDetail = () => {
 
     useEffect(() => {
         dispatch(getBoard(id));
+        dispatch(commnetList(id));
     }, [dispatch, id]);
 
   return (
@@ -49,6 +54,10 @@ const BoardDetail = () => {
                     <p>{boardData.board.contents}</p>
                     <p>작성일자: {new Date(boardData.board.createdAt).toLocaleString()}</p>
                     <p>조회수: {boardData.board.hits}</p>
+
+                    <CommentForm id={id} />
+
+                    <CommentList comments={commentDate.commentList} />
                 </>
             ) : (
                 <div>Loading...</div>
