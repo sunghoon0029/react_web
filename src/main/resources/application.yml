@@ -13,12 +13,20 @@ spring:
     open-in-view: true
     show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
   redis:
     host: localhost
     port: 6379
 
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+
 jwt:
   secret:
     key: x!A%D*G-KaPdSgVkYp3s5v8y/B?E(H+M
+
+file:
+  upload-dir: /Users/josunghoon/springboot_img/
