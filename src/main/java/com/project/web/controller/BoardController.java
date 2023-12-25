@@ -14,6 +14,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +25,17 @@ public class BoardController {
 
     private final BoardService boardService;
 
+//    @PostMapping("/save")
+//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+//        return ResponseEntity.ok(boardService.save(request, member));
+//    }
+
     @PostMapping("/save")
     public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+                                                   @RequestParam("files") List<MultipartFile> file,
                                                    @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        return ResponseEntity.ok(boardService.save(request, member));
+        return ResponseEntity.ok(boardService.saveWithFile(request, file, member));
     }
 
 //    @GetMapping("/")

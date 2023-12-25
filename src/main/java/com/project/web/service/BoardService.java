@@ -5,6 +5,7 @@ import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
 import com.project.web.entity.Board;
+import com.project.web.entity.File;
 import com.project.web.entity.Member;
 import com.project.web.repository.BoardRepository;
 import com.project.web.repository.MemberRepository;
@@ -12,6 +13,7 @@ import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final FileService fileService;
 
     public BoardWriteResponse save(BoardRequest request, CustomUserDetails member) throws Exception {
 
@@ -33,6 +36,31 @@ public class BoardService {
 
         board.setMember(writer);
         Board saveBoard = boardRepository.save(board);
+
+        return BoardWriteResponse.toDTO(saveBoard);
+    }
+
+    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
+
+        Board board = BoardRequest.toEntity(request);
+
+        Member writer = memberRepository.findByEmail(member.getUsername())
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+
+        board.setMember(writer);
+        Board saveBoard = boardRepository.save(board);
+
+        List<String> fileNames = fileService.uploadFiles(files);
+
+        for (String fileName: fileNames) {
+            File file = File.builder()
+                    .originalFileName(fileName)
+                    .filePath(fileService.getUploadDir() + java.io.File.separator + fileName)
+                    .board(saveBoard)
+                    .build();
+
+            saveBoard.getFiles().add(file);
+        }
 
         return BoardWriteResponse.toDTO(saveBoard);
     }
