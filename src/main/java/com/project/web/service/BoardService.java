@@ -25,7 +25,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-    private final FileService fileService;
+    private final FileTestService fileService;
 
     public BoardWriteResponse save(BoardRequest request, CustomUserDetails member) throws Exception {
 
