@@ -1,53 +1,70 @@
 package com.project.web.service;
 
+import com.project.web.dto.response.file.FileUploadResponse;
+import com.project.web.entity.File;
+import com.project.web.repository.FileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FileService {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    @Value("${file.dir}")
+    private String fileDir;
 
-    public String uploadFile(MultipartFile file) {
-        try {
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
+    private final FileRepository fileRepository;
 
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            String filePath = uploadDir + File.separator + fileName;
+    public File uploadFile(MultipartFile file) throws IOException {
 
-            file.transferTo(new File(filePath));
+        String originalFilename = file.getOriginalFilename();
+        String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+        String filePath = fileDir + java.io.File.separator + storedFilename;
 
-            return fileName;
-        } catch (IOException e) {
-            e.printStackTrace();
+        file.transferTo(new java.io.File(filePath));
 
-            throw new RuntimeException("파일 업로드에 실패했습니다.");
-        }
+        File newFile = File.builder()
+                .originalFilename(originalFilename)
+                .storedFilename(storedFilename)
+                .filePath(filePath)
+                .build();
+
+        return fileRepository.save(newFile);
     }
 
-    public List<String> uploadFiles(List<MultipartFile> files) {
+    public List<FileUploadResponse> uploadFiles(List<MultipartFile> files) throws IOException {
 
-        List<String> fileNames = new ArrayList<>();
+        List<File> uploadFiles = new ArrayList<>();
 
-        for (MultipartFile file: files) {
-            fileNames.add(uploadFile(file));
+        for (MultipartFile file : files) {
+
+            String originalFilename = file.getOriginalFilename();
+            String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+            String filePath = fileDir + java.io.File.separator + storedFilename;
+
+            file.transferTo(new java.io.File(filePath));
+
+            File uploadFile = File.builder()
+                    .originalFilename(originalFilename)
+                    .storedFilename(storedFilename)
+                    .filePath(filePath)
+                    .build();
+
+            uploadFiles.add(fileRepository.save(uploadFile));
         }
 
-        return fileNames;
-    }
+        List<FileUploadResponse> fileUploadResponseList = uploadFiles.stream()
+                .map(FileUploadResponse::toDTO)
+                .collect(Collectors.toList());
 
-    public String getUploadDir() {
-        return uploadDir;
+        return fileUploadResponseList;
     }
 }

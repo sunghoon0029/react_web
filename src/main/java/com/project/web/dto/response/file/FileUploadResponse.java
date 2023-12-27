@@ -8,21 +8,23 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class FileResponse {
+public class FileUploadResponse {
 
     private Long id;
-    private String originalFileName;
-    private String fileName;
+    private String originalFilename;
+    private String storedFilename;
     private String filePath;
     private LocalDateTime createdAt;
+//    private Long board;
 
-    public static FileResponse toDTO(File file) {
-        return FileResponse.builder()
+    public static FileUploadResponse toDTO(File file) {
+        return FileUploadResponse.builder()
                 .id(file.getId())
-                .originalFileName(file.getOriginalFileName())
-                .fileName(file.getFileName())
+                .originalFilename(file.getOriginalFilename())
+                .storedFilename(file.getStoredFilename())
                 .filePath(file.getFilePath())
                 .createdAt(file.getCreatedAt())
+//                .board(file.getBoard().getId())
                 .build();
     }
 }

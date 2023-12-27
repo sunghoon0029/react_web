@@ -20,10 +20,10 @@ public class File extends BaseTime {
     private Long id;
 
     @Column
-    private String originalFileName;
+    private String originalFilename;
 
     @Column
-    private String fileName;
+    private String storedFilename;
 
     @Column
     private String filePath;

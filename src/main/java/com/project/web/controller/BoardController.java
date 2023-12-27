@@ -25,18 +25,25 @@ public class BoardController {
 
     private final BoardService boardService;
 
-//    @PostMapping("/save")
-//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
-//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-//        return ResponseEntity.ok(boardService.save(request, member));
-//    }
-
     @PostMapping("/save")
     public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
-                                                   @RequestParam("files") List<MultipartFile> file,
                                                    @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        return ResponseEntity.ok(boardService.saveWithFile(request, file, member));
+        return ResponseEntity.ok(boardService.save(request, member));
     }
+
+//    @PostMapping("/save")
+//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+//                                                   @RequestPart List<MultipartFile> files,
+//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+//        return ResponseEntity.ok(boardService.save(request, files, member));
+//    }
+
+//    @PostMapping("/save")
+//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+//                                                   @RequestParam("files") List<MultipartFile> file,
+//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+//        return ResponseEntity.ok(boardService.saveWithFile(request, file, member));
+//    }
 
 //    @GetMapping("/")
 //    public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
