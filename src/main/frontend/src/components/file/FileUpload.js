@@ -4,8 +4,8 @@ const FileUpload = () => {
 
     const [file, setFile] = useState(null);
 
-    const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
     };
 
     const handleUpload = async () => {
@@ -13,7 +13,7 @@ const FileUpload = () => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('http://localhost:8080/file/upload', {
+            const response = await fetch('http://localhost:8080/upload/file', {
                 method: 'POST',
                 body: formData,
             });

@@ -4,20 +4,19 @@ const MultipleFileUpload = () => {
 
     const [files, setFiles] = useState([]);
 
-    const handleFileChange = (event) => {
-        const seletedFiles = Array.from(event.target.files);
-        setFiles(seletedFiles);
+    const handleFileChange = (e) => {
+        setFiles(e.target.files);
     };
 
     const handleUpload = async () => {
         const formData = new FormData();
 
-        files.forEach((file, index) => {
-            formData.append(`file${index + 1}`, file);
-        });
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
 
         try {
-            const response = await fetch('http://localhost:8080/file/upload', {
+            const response = await fetch('http://localhost:8080/upload/files', {
                 method: 'POST',
                 body: formData,
             });
