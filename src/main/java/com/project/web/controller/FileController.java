@@ -25,8 +25,8 @@ public class FileController {
         return ResponseEntity.ok("File upload success.");
     }
 
-    @PostMapping("/files")
-    public ResponseEntity<List<FileUploadResponse>> uploadFiles(@RequestPart List<MultipartFile> files) throws IOException {
-        return ResponseEntity.ok(fileService.uploadFiles(files));
-    }
+//    @PostMapping("/files")
+//    public ResponseEntity<List<FileUploadResponse>> uploadFiles(@RequestPart List<MultipartFile> files) throws IOException {
+//        return ResponseEntity.ok(fileService.uploadFiles(files));
+//    }
 }

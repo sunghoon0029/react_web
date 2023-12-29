@@ -45,6 +45,17 @@ public class Board extends BaseTime {
         member.getBoards().add(this);
     }
 
+    public void setFiles(List<File> files) {
+        if (this.files == null) {
+            this.files = new ArrayList<>();
+        }
+        this.files.clear();
+        this.files.addAll(files);
+        for (File file : files) {
+            file.setBoard(this);
+        }
+    }
+
     public void update(String title, String contents) {
         this.title = title;
         this.contents = contents;

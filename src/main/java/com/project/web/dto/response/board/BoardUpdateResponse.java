@@ -8,23 +8,23 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class BoardWriteResponse {
+public class BoardUpdateResponse {
 
     private Long id;
     private String title;
     private String contents;
     private int hits;
     private Long member;
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public static BoardWriteResponse toDTO(Board board) {
-        return BoardWriteResponse.builder()
+    public static BoardUpdateResponse toDTO(Board board) {
+        return BoardUpdateResponse.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
                 .hits(board.getHits())
                 .member(board.getMember().getId())
-                .createdAt(board.getCreatedAt())
+                .updatedAt(board.getUpdatedAt())
                 .build();
     }
 }

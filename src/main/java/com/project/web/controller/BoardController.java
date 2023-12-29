@@ -3,6 +3,7 @@ package com.project.web.controller;
 import com.project.web.dto.request.board.BoardRequest;
 import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
+import com.project.web.dto.response.board.BoardUpdateResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
 import com.project.web.security.CustomUserDetails;
 import com.project.web.service.BoardService;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,25 +27,18 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/save")
-    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
-                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        return ResponseEntity.ok(boardService.save(request, member));
+//    @PostMapping("/save")
+//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
+//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+//        return ResponseEntity.ok(boardService.save(request, member));
+//    }
+
+    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart BoardRequest request,
+                                                            @RequestPart List<MultipartFile> files,
+                                                            @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+        return ResponseEntity.ok(boardService.saveWithFile(request, files, member));
     }
-
-//    @PostMapping("/save")
-//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
-//                                                   @RequestPart List<MultipartFile> files,
-//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-//        return ResponseEntity.ok(boardService.save(request, files, member));
-//    }
-
-//    @PostMapping("/save")
-//    public ResponseEntity<BoardWriteResponse> save(@RequestBody BoardRequest request,
-//                                                   @RequestParam("files") List<MultipartFile> file,
-//                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-//        return ResponseEntity.ok(boardService.saveWithFile(request, file, member));
-//    }
 
 //    @GetMapping("/")
 //    public ResponseEntity<List<BoardListResponse>> findAll() throws Exception {
@@ -61,9 +56,9 @@ public class BoardController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Boolean> updateById(@PathVariable Long id,
-                                              @RequestBody BoardRequest request,
-                                              @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+    public ResponseEntity<BoardUpdateResponse> updateById(@PathVariable Long id,
+                                                          @RequestBody BoardRequest request,
+                                                          @AuthenticationPrincipal CustomUserDetails member) throws Exception {
         return ResponseEntity.ok(boardService.updateById(id, request, member));
     }
 

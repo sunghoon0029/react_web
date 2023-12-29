@@ -39,7 +39,7 @@ public class Member extends BaseTime {
     @Column
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
 

@@ -15,6 +15,7 @@ public class BoardDetailResponse {
     private int hits;
     private String member;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static BoardDetailResponse toDTO(Board board) {
         return BoardDetailResponse.builder()
@@ -23,6 +24,7 @@ public class BoardDetailResponse {
                 .hits(board.getHits())
                 .member(board.getMember().getName())
                 .createdAt(board.getCreatedAt())
+                .updatedAt(board.getUpdatedAt())
                 .build();
     }
 }

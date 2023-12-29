@@ -40,7 +40,35 @@ public class FileService {
         return fileRepository.save(newFile);
     }
 
-    public List<FileUploadResponse> uploadFiles(List<MultipartFile> files) throws IOException {
+//    public List<FileUploadResponse> uploadFiles(List<MultipartFile> files) throws IOException {
+//
+//        List<File> uploadFiles = new ArrayList<>();
+//
+//        for (MultipartFile file : files) {
+//
+//            String originalFilename = file.getOriginalFilename();
+//            String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+//            String filePath = fileDir + java.io.File.separator + storedFilename;
+//
+//            file.transferTo(new java.io.File(filePath));
+//
+//            File uploadFile = File.builder()
+//                    .originalFilename(originalFilename)
+//                    .storedFilename(storedFilename)
+//                    .filePath(filePath)
+//                    .build();
+//
+//            uploadFiles.add(fileRepository.save(uploadFile));
+//        }
+//
+//        List<FileUploadResponse> fileUploadResponseList = uploadFiles.stream()
+//                .map(FileUploadResponse::toDTO)
+//                .collect(Collectors.toList());
+//
+//        return fileUploadResponseList;
+//    }
+
+    public List<File> uploadFiles(List<MultipartFile> files) throws IOException {
 
         List<File> uploadFiles = new ArrayList<>();
 
@@ -60,11 +88,6 @@ public class FileService {
 
             uploadFiles.add(fileRepository.save(uploadFile));
         }
-
-        List<FileUploadResponse> fileUploadResponseList = uploadFiles.stream()
-                .map(FileUploadResponse::toDTO)
-                .collect(Collectors.toList());
-
-        return fileUploadResponseList;
+        return uploadFiles;
     }
 }

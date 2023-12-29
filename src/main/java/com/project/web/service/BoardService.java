@@ -3,8 +3,11 @@ package com.project.web.service;
 import com.project.web.dto.request.board.BoardRequest;
 import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
+import com.project.web.dto.response.board.BoardUpdateResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
+import com.project.web.dto.response.file.FileUploadResponse;
 import com.project.web.entity.Board;
+import com.project.web.entity.File;
 import com.project.web.entity.Member;
 import com.project.web.repository.BoardRepository;
 import com.project.web.repository.MemberRepository;
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final FileService fileService;
 
     public BoardWriteResponse save(BoardRequest request, CustomUserDetails member) throws Exception {
 
@@ -38,30 +43,26 @@ public class BoardService {
         return BoardWriteResponse.toDTO(saveBoard);
     }
 
-//    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
-//
-//        Board board = BoardRequest.toEntity(request);
-//
-//        Member writer = memberRepository.findByEmail(member.getUsername())
-//                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
-//
-//        board.setMember(writer);
-//        Board saveBoard = boardRepository.save(board);
-//
-//        List<String> fileNames = fileService.uploadFiles(files);
-//
-//        for (String fileName: fileNames) {
-//            File file = File.builder()
-//                    .originalFilename(fileName)
-//                    .filePath(fileService.getUploadDir() + java.io.File.separator + fileName)
-//                    .board(saveBoard)
-//                    .build();
-//
-//            saveBoard.getFiles().add(file);
-//        }
-//
-//        return BoardWriteResponse.toDTO(saveBoard);
-//    }
+    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
+
+        Board board = BoardRequest.toEntity(request);
+
+        Member writer = memberRepository.findByEmail(member.getUsername())
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+
+        board.setMember(writer);
+        Board saveBoard = boardRepository.save(board);
+
+        if (!files.isEmpty()) {
+
+            List<File> uploadFiles = fileService.uploadFiles(files);
+            saveBoard.setFiles(uploadFiles);
+        }
+
+        boardRepository.save(saveBoard);
+
+        return BoardWriteResponse.toDTO(saveBoard);
+    }
 
     public List<BoardListResponse> findAll() {
 
@@ -92,7 +93,7 @@ public class BoardService {
         return response;
     }
 
-    public boolean updateById(Long id, BoardRequest request, CustomUserDetails member) throws Exception {
+    public BoardUpdateResponse updateById(Long id, BoardRequest request, CustomUserDetails member) throws Exception {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new Exception("게시글 정보를 찾을 수 없습니다."));
@@ -105,9 +106,9 @@ public class BoardService {
         }
 
         board.update(request.getTitle(), request.getContents());
-        boardRepository.save(board);
+        Board saveBoard = boardRepository.save(board);
 
-        return true;
+        return BoardUpdateResponse.toDTO(saveBoard);
     }
 
     public boolean deleteById(Long id) {
