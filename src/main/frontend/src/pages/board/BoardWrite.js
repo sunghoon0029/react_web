@@ -13,6 +13,7 @@ const BoardWrite = () => {
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
+  const [image, setImage] = useState(null);
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -20,17 +21,25 @@ const BoardWrite = () => {
   const onChangeContents = (e) => {
     setContents(e.target.value);
   };
+  const onChangeImage = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    let body = {
-      title: title,
-      contents: contents,
-    };
+    // let body = {
+    //   title: title,
+    //   contents: contents,
+    // };
+
+    const formData = new FormData();
+    formData.append('request', JSON.stringify({ title, contents }));
+    formData.append('files', image);
 
     try { 
-      dispatch(createBoard(body));
+      dispatch(createBoard(formData));
 
       alert('게시글 작성 완료');
       navigate('/board');
@@ -54,8 +63,8 @@ const BoardWrite = () => {
             <Form.Control
                 type="title"
                 placeholder="title"
-                value={ title }
-                onChange={ onChangeTitle }
+                value={title}
+                onChange={onChangeTitle}
             />
           </Form.Group>
 
@@ -65,8 +74,16 @@ const BoardWrite = () => {
                 as="textarea"
                 rows={5}
                 placeholder="contents"
-                value={ contents }
-                onChange={ onChangeContents }
+                value={contents}
+                onChange={onChangeContents}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Image</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={onChangeImage}
             />
           </Form.Group>
 
