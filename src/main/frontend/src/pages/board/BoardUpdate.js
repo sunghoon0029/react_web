@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getBoard, updateBoard } from '../../modules/board';
+import { updateBoard } from '../../modules/board';
 import Layout from '../../components/layout/Layout';
 import { Button, Container, Form } from 'react-bootstrap';
 
@@ -23,7 +23,7 @@ const BoardUpdate = () => {
         setContents(e.target.value);
     };
 
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
 
         let body = {
@@ -48,9 +48,11 @@ const BoardUpdate = () => {
     };
 
     useEffect(() => {
-        setTitle(boardData.board.title);
-        setContents(boardData.board.contents);
-    }, [dispatch, id]);
+        if (boardData.board) {
+            setTitle(boardData.board.title);
+            setContents(boardData.board.contents);
+        }
+    }, [dispatch, id, boardData.board]);
 
   return (
     <Layout>

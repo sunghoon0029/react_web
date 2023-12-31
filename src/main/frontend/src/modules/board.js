@@ -20,7 +20,7 @@ const DELETE_BOARD = 'DELETE_BOARD';
 const accessToken = localStorage.getItem('accessToken');
 
 const headers = {
-    Authorization: `Bearer ${accessToken}`
+    Authorization: `Bearer ${accessToken}`,
 };
 
 export const createBoard = (dataToSubmit) => async dispatch => {
@@ -142,7 +142,7 @@ export default function reducer(state = initalState, action) {
             return {
                 ...state,
                 board: action.payload,
-            }
+            };
         default:
             return state;
     };
