@@ -13,7 +13,7 @@ const BoardWrite = () => {
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState([]);
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -26,6 +26,11 @@ const BoardWrite = () => {
     setImage(file);
   };
 
+  // const onChangeImages = (e) => {
+  //   const selectedImages = Array.from(e.target.files);
+  //   setImages(selectedImages);
+  // }
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,8 +40,20 @@ const BoardWrite = () => {
     // };
 
     const formData = new FormData();
-    formData.append('request', JSON.stringify({ title, contents }));
+
+    const json = JSON.stringify({ title, contents });
+    const blob = new Blob([json], { type: "application/json" });
+
+    formData.append('request', blob);
     formData.append('files', image);
+
+    // for (let i = 0; i < FileElement.files.length; i++) {
+    //   formData.append("files", FileElement.files[i]);
+    // };
+
+    // images.forEach((image, index) => {
+    //   formData.append(`image-${index}`, image);
+    // });
 
     try { 
       dispatch(createBoard(formData));
@@ -83,6 +100,7 @@ const BoardWrite = () => {
             <Form.Label>Image</Form.Label>
             <Form.Control
               type="file"
+              multiple
               onChange={onChangeImage}
             />
           </Form.Group>
