@@ -1,6 +1,5 @@
 package com.project.web.service;
 
-import com.project.web.dto.response.file.FileUploadResponse;
 import com.project.web.entity.File;
 import com.project.web.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,42 +29,15 @@ public class FileService {
 
         file.transferTo(new java.io.File(filePath));
 
-        File newFile = File.builder()
+        File uploadFile = File.builder()
                 .originalFilename(originalFilename)
                 .storedFilename(storedFilename)
                 .filePath(filePath)
                 .build();
 
-        return fileRepository.save(newFile);
+//        return fileRepository.save(uploadFile);
+        return uploadFile;
     }
-
-//    public List<FileUploadResponse> uploadFiles(List<MultipartFile> files) throws IOException {
-//
-//        List<File> uploadFiles = new ArrayList<>();
-//
-//        for (MultipartFile file : files) {
-//
-//            String originalFilename = file.getOriginalFilename();
-//            String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
-//            String filePath = fileDir + java.io.File.separator + storedFilename;
-//
-//            file.transferTo(new java.io.File(filePath));
-//
-//            File uploadFile = File.builder()
-//                    .originalFilename(originalFilename)
-//                    .storedFilename(storedFilename)
-//                    .filePath(filePath)
-//                    .build();
-//
-//            uploadFiles.add(fileRepository.save(uploadFile));
-//        }
-//
-//        List<FileUploadResponse> fileUploadResponseList = uploadFiles.stream()
-//                .map(FileUploadResponse::toDTO)
-//                .collect(Collectors.toList());
-//
-//        return fileUploadResponseList;
-//    }
 
     public List<File> uploadFiles(List<MultipartFile> files) throws IOException {
 
@@ -86,7 +57,8 @@ public class FileService {
                     .filePath(filePath)
                     .build();
 
-            uploadFiles.add(fileRepository.save(uploadFile));
+//            uploadFiles.add(fileRepository.save(uploadFile));
+            uploadFiles.add(uploadFile);
         }
         return uploadFiles;
     }

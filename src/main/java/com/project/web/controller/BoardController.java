@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +32,10 @@ public class BoardController {
 //        return ResponseEntity.ok(boardService.save(request, member));
 //    }
 
-    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart BoardRequest request,
-                                                            @RequestPart List<MultipartFile> files,
+//    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping("/save")
+    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart(value = "request") BoardRequest request,
+                                                            @RequestPart(value = "image", required = false) List<MultipartFile> files,
                                                             @AuthenticationPrincipal CustomUserDetails member) throws Exception {
         return ResponseEntity.ok(boardService.saveWithFile(request, files, member));
     }

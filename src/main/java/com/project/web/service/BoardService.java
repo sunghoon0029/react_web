@@ -5,7 +5,6 @@ import com.project.web.dto.response.board.BoardDetailResponse;
 import com.project.web.dto.response.board.BoardListResponse;
 import com.project.web.dto.response.board.BoardUpdateResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
-import com.project.web.dto.response.file.FileUploadResponse;
 import com.project.web.entity.Board;
 import com.project.web.entity.File;
 import com.project.web.entity.Member;

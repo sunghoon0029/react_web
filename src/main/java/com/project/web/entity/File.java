@@ -28,12 +28,16 @@ public class File extends BaseTime {
     @Column
     private String filePath;
 
+    private Long fileSize;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
     public void setBoard(Board board) {
         this.board = board;
-        board.getFiles().add(this);
+
+        if (!board.getFiles().contains(this))
+            board.getFiles().add(this);
     }
 }
