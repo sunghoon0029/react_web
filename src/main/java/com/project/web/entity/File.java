@@ -28,6 +28,7 @@ public class File extends BaseTime {
     @Column
     private String filePath;
 
+    @Column
     private Long fileSize;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,8 @@
 package com.project.web.service;
 
+import com.project.web.entity.Board;
 import com.project.web.entity.File;
+import com.project.web.repository.BoardRepository;
 import com.project.web.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ public class FileService {
     private String fileDir;
 
     private final FileRepository fileRepository;
+    private final BoardRepository boardRepository;
 
     public File uploadFile(MultipartFile file) throws IOException {
 
@@ -39,7 +42,10 @@ public class FileService {
         return uploadFile;
     }
 
-    public List<File> uploadFiles(List<MultipartFile> files) throws IOException {
+    public List<File> uploadFiles(List<MultipartFile> files, Long boardId) throws Exception {
+
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new Exception("게시글 정보를 찾을 수 없습니다."));
 
         List<File> uploadFiles = new ArrayList<>();
 
@@ -55,9 +61,10 @@ public class FileService {
                     .originalFilename(originalFilename)
                     .storedFilename(storedFilename)
                     .filePath(filePath)
+                    .fileSize(file.getSize())
                     .build();
 
-//            uploadFiles.add(fileRepository.save(uploadFile));
+            uploadFile.setBoard(board);
             uploadFiles.add(uploadFile);
         }
         return uploadFiles;

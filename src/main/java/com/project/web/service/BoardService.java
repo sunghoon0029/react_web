@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
@@ -52,14 +53,14 @@ public class BoardService {
         board.setMember(writer);
         Board saveBoard = boardRepository.save(board);
 
-        if (!files.isEmpty()) {
+        if (files != null && !files.isEmpty()) {
 
-            List<File> uploadFiles = fileService.uploadFiles(files);
-            saveBoard.setFiles(uploadFiles);
+            List<File> uploadFiles = fileService.uploadFiles(files, saveBoard.getId());
+
+            for (File file : uploadFiles) {
+                saveBoard.addFile(file);
+            }
         }
-
-        boardRepository.save(saveBoard);
-
         return BoardWriteResponse.toDTO(saveBoard);
     }
 

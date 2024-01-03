@@ -14,6 +14,7 @@ public class FileUploadResponse {
     private String originalFilename;
     private String storedFilename;
     private String filePath;
+    private Long fileSize;
     private LocalDateTime createdAt;
 //    private Long board;
 
@@ -23,6 +24,7 @@ public class FileUploadResponse {
                 .originalFilename(file.getOriginalFilename())
                 .storedFilename(file.getStoredFilename())
                 .filePath(file.getFilePath())
+                .fileSize(file.getFileSize())
                 .createdAt(file.getCreatedAt())
 //                .board(file.getBoard().getId())
                 .build();
