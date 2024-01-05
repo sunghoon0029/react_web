@@ -9,6 +9,7 @@ import com.project.web.entity.Board;
 import com.project.web.entity.File;
 import com.project.web.entity.Member;
 import com.project.web.repository.BoardRepository;
+import com.project.web.repository.FileRepository;
 import com.project.web.repository.MemberRepository;
 import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,9 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final FileRepository fileRepository;
     private final FileService fileService;
+    private final FileHandler fileHandler;
 
     public BoardWriteResponse save(BoardRequest request, CustomUserDetails member) throws Exception {
 
@@ -43,6 +46,29 @@ public class BoardService {
         return BoardWriteResponse.toDTO(saveBoard);
     }
 
+//    @Transactional
+//    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
+//
+//        Board board = BoardRequest.toEntity(request);
+//
+//        Member writer = memberRepository.findByEmail(member.getUsername())
+//                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+//
+//        board.setMember(writer);
+//        Board saveBoard = boardRepository.save(board);
+//
+//        if (files != null && !files.isEmpty()) {
+//
+//            List<File> uploadFiles = fileService.uploadFiles(files, saveBoard.getId());
+//
+//            for (File file : uploadFiles) {
+//                saveBoard.addFile(file);
+//            }
+//        }
+//        return BoardWriteResponse.toDTO(saveBoard);
+//    }
+
+    @Transactional
     public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
 
         Board board = BoardRequest.toEntity(request);
@@ -51,16 +77,17 @@ public class BoardService {
                 .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
 
         board.setMember(writer);
-        Board saveBoard = boardRepository.save(board);
 
-        if (files != null && !files.isEmpty()) {
+        List<File> fileList = fileHandler.parseFileInfo(files);
 
-            List<File> uploadFiles = fileService.uploadFiles(files, saveBoard.getId());
-
-            for (File file : uploadFiles) {
-                saveBoard.addFile(file);
+        if (!fileList.isEmpty()) {
+            for (File file : fileList) {
+                board.addFile(fileRepository.save(file));
             }
         }
+
+        Board saveBoard = boardRepository.save(board);
+
         return BoardWriteResponse.toDTO(saveBoard);
     }
 

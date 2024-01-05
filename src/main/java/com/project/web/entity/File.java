@@ -35,6 +35,12 @@ public class File extends BaseTime {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    public File(String originalFilename, String filePath, Long fileSize) {
+        this.originalFilename = originalFilename;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
+
     public void setBoard(Board board) {
         this.board = board;
 

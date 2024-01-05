@@ -7,6 +7,7 @@ import com.project.web.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class FileService {
         return uploadFile;
     }
 
+    @Transactional
     public List<File> uploadFiles(List<MultipartFile> files, Long boardId) throws Exception {
 
         Board board = boardRepository.findById(boardId)
@@ -66,6 +68,7 @@ public class FileService {
 
             uploadFile.setBoard(board);
             uploadFiles.add(uploadFile);
+            fileRepository.save(uploadFile);
         }
         return uploadFiles;
     }
