@@ -20,10 +20,10 @@ public class File extends BaseTime {
     private Long id;
 
     @Column
-    private String originalFilename;
+    private String originalFileName;
 
     @Column
-    private String storedFilename;
+    private String storedFileName;
 
     @Column
     private String filePath;
@@ -31,14 +31,19 @@ public class File extends BaseTime {
     @Column
     private Long fileSize;
 
+    @Column
+    private String extension;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public File(String originalFilename, String filePath, Long fileSize) {
-        this.originalFilename = originalFilename;
+    public File(String originalFilename, String storedFileName, String filePath, Long fileSize, String extension) {
+        this.originalFileName = originalFilename;
+        this.storedFileName = storedFileName;
         this.filePath = filePath;
         this.fileSize = fileSize;
+        this.extension = extension;
     }
 
     public void setBoard(Board board) {

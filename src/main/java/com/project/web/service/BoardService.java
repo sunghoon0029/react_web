@@ -13,19 +13,25 @@ import com.project.web.repository.FileRepository;
 import com.project.web.repository.MemberRepository;
 import com.project.web.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
@@ -89,6 +95,56 @@ public class BoardService {
         Board saveBoard = boardRepository.save(board);
 
         return BoardWriteResponse.toDTO(saveBoard);
+    }
+
+    @Transactional
+    public Long test(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
+        
+        Board board = BoardRequest.toEntity(request);
+
+        Member writer = memberRepository.findByEmail(member.getUsername())
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+
+        board.setMember(writer);
+
+        Long id = boardRepository.save(board).getId();
+
+        if (!CollectionUtils.isEmpty(multipartFiles)) {
+
+            for (MultipartFile multipartFile : multipartFiles) {
+
+                String originalFileName = multipartFile.getOriginalFilename();
+                String storedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+                String filePath = fileDir + originalFileName;
+                long fileSize = multipartFile.getSize();
+                String extension = multipartFile.getContentType();
+
+                File file = new File(originalFileName, storedFileName, filePath, fileSize, extension);
+                file.setBoard(board);
+                fileRepository.save(file);
+
+                multipartFile.transferTo(new java.io.File(filePath));
+            }
+        }
+
+        return id;
+    }
+
+    @Transactional
+    public Long test2(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
+
+        Board board = BoardRequest.toEntity(request);
+
+        Member writer = memberRepository.findByEmail(member.getUsername())
+                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+
+        board.setMember(writer);
+
+        Long id = boardRepository.save(board).getId();
+
+        fileService.uploadFiles(board, multipartFiles);
+
+        return id;
     }
 
     public List<BoardListResponse> findAll() {

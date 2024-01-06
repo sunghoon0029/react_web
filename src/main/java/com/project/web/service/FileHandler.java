@@ -52,7 +52,7 @@ public class FileHandler {
                 String newFileName = System.nanoTime() + originalFileExtension;
 
                 File file1 = File.builder()
-                        .originalFilename(multipartFile.getOriginalFilename())
+                        .originalFileName(multipartFile.getOriginalFilename())
                         .filePath(path + java.io.File.separator + newFileName)
                         .fileSize(multipartFile.getSize())
                         .build();

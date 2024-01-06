@@ -34,7 +34,8 @@ public class Board extends BaseTime {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -51,17 +52,6 @@ public class Board extends BaseTime {
         if (file.getBoard() != this)
             file.setBoard(this);
     }
-
-//    public void setFiles(List<File> files) {
-//        if (this.files == null) {
-//            this.files = new ArrayList<>();
-//        }
-//        this.files.clear();
-//        this.files.addAll(files);
-//        for (File file : files) {
-//            file.setBoard(this);
-//        }
-//    }
 
     public void update(String title, String contents) {
         this.title = title;

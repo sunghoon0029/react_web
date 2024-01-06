@@ -21,8 +21,8 @@ public class FileUploadResponse {
     public static FileUploadResponse toDTO(File file) {
         return FileUploadResponse.builder()
                 .id(file.getId())
-                .originalFilename(file.getOriginalFilename())
-                .storedFilename(file.getStoredFilename())
+                .originalFilename(file.getOriginalFileName())
+                .storedFilename(file.getStoredFileName())
                 .filePath(file.getFilePath())
                 .fileSize(file.getFileSize())
                 .createdAt(file.getCreatedAt())
