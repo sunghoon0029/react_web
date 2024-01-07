@@ -33,20 +33,19 @@ public class BoardController {
 //    }
 
 //    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart(value = "request") BoardRequest request,
+//                                                            @RequestPart(value = "image", required = false) List<MultipartFile> files,
+//                                                            @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+//        return ResponseEntity.ok(boardService.saveWithFile(request, files, member));
+//    }
+
     @PostMapping("/save")
-    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart(value = "request") BoardRequest request,
-                                                            @RequestPart(value = "image", required = false) List<MultipartFile> files,
-                                                            @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        return ResponseEntity.ok(boardService.saveWithFile(request, files, member));
-    }
+    public ResponseEntity<?> save(@RequestPart(value = "request") BoardRequest request,
+                                  @RequestPart(value = "image", required = false) List<MultipartFile> files,
+                                  @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+        Long id = boardService.saveWithFile(request, files, member);
 
-    @PostMapping("/save/test")
-    public ResponseEntity<?> testBoard(@RequestPart(value = "request") BoardRequest request,
-                                       @RequestPart(value = "image", required = false) List<MultipartFile> files,
-                                       @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        Long test = boardService.test2(request, files, member);
-
-        return ResponseEntity.ok(test);
+        return ResponseEntity.ok(id);
     }
 
 //    @GetMapping("/")

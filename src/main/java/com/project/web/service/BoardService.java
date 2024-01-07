@@ -74,64 +74,64 @@ public class BoardService {
 //        return BoardWriteResponse.toDTO(saveBoard);
 //    }
 
+//    @Transactional
+//    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
+//
+//        Board board = BoardRequest.toEntity(request);
+//
+//        Member writer = memberRepository.findByEmail(member.getUsername())
+//                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+//
+//        board.setMember(writer);
+//
+//        List<File> fileList = fileHandler.parseFileInfo(files);
+//
+//        if (!fileList.isEmpty()) {
+//            for (File file : fileList) {
+//                board.addFile(fileRepository.save(file));
+//            }
+//        }
+//
+//        Board saveBoard = boardRepository.save(board);
+//
+//        return BoardWriteResponse.toDTO(saveBoard);
+//    }
+
+//    @Transactional
+//    public Long test(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
+//
+//        Board board = BoardRequest.toEntity(request);
+//
+//        Member writer = memberRepository.findByEmail(member.getUsername())
+//                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
+//
+//        board.setMember(writer);
+//
+//        Long id = boardRepository.save(board).getId();
+//
+//        if (!CollectionUtils.isEmpty(multipartFiles)) {
+//
+//            for (MultipartFile multipartFile : multipartFiles) {
+//
+//                String originalFileName = multipartFile.getOriginalFilename();
+//                String storedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+//                String filePath = fileDir + originalFileName;
+//                long fileSize = multipartFile.getSize();
+//                String extension = multipartFile.getContentType();
+//
+//                File file = new File(originalFileName, storedFileName, filePath, fileSize, extension);
+//                file.setBoard(board);
+//                fileRepository.save(file);
+//
+//                multipartFile.transferTo(new java.io.File(filePath));
+//            }
+//        }
+//
+//        return id;
+//    }
+
     @Transactional
-    public BoardWriteResponse saveWithFile(BoardRequest request, List<MultipartFile> files, CustomUserDetails member) throws Exception {
-
-        Board board = BoardRequest.toEntity(request);
-
-        Member writer = memberRepository.findByEmail(member.getUsername())
-                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
-
-        board.setMember(writer);
-
-        List<File> fileList = fileHandler.parseFileInfo(files);
-
-        if (!fileList.isEmpty()) {
-            for (File file : fileList) {
-                board.addFile(fileRepository.save(file));
-            }
-        }
-
-        Board saveBoard = boardRepository.save(board);
-
-        return BoardWriteResponse.toDTO(saveBoard);
-    }
-
-    @Transactional
-    public Long test(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
-        
-        Board board = BoardRequest.toEntity(request);
-
-        Member writer = memberRepository.findByEmail(member.getUsername())
-                .orElseThrow(() -> new Exception("사용자 정보를 찾을 수 없습니다."));
-
-        board.setMember(writer);
-
-        Long id = boardRepository.save(board).getId();
-
-        if (!CollectionUtils.isEmpty(multipartFiles)) {
-
-            for (MultipartFile multipartFile : multipartFiles) {
-
-                String originalFileName = multipartFile.getOriginalFilename();
-                String storedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
-                String filePath = fileDir + originalFileName;
-                long fileSize = multipartFile.getSize();
-                String extension = multipartFile.getContentType();
-
-                File file = new File(originalFileName, storedFileName, filePath, fileSize, extension);
-                file.setBoard(board);
-                fileRepository.save(file);
-
-                multipartFile.transferTo(new java.io.File(filePath));
-            }
-        }
-
-        return id;
-    }
-
-    @Transactional
-    public Long test2(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
+    public Long saveWithFile(BoardRequest request, List<MultipartFile> multipartFiles, CustomUserDetails member) throws Exception {
 
         Board board = BoardRequest.toEntity(request);
 
