@@ -32,20 +32,11 @@ public class BoardController {
 //        return ResponseEntity.ok(boardService.save(request, member));
 //    }
 
-//    @PostMapping(value = "/save", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-//    public ResponseEntity<BoardWriteResponse> saveWithFiles(@RequestPart(value = "request") BoardRequest request,
-//                                                            @RequestPart(value = "image", required = false) List<MultipartFile> files,
-//                                                            @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-//        return ResponseEntity.ok(boardService.saveWithFile(request, files, member));
-//    }
-
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestPart(value = "request") BoardRequest request,
-                                  @RequestPart(value = "image", required = false) List<MultipartFile> files,
-                                  @AuthenticationPrincipal CustomUserDetails member) throws Exception {
-        Long id = boardService.saveWithFile(request, files, member);
-
-        return ResponseEntity.ok(id);
+    public ResponseEntity<BoardWriteResponse> save(@RequestPart(value = "request") BoardRequest request,
+                                                   @RequestPart(value = "image", required = false) List<MultipartFile> files,
+                                                   @AuthenticationPrincipal CustomUserDetails member) throws Exception {
+        return ResponseEntity.ok(boardService.save(request, files, member));
     }
 
 //    @GetMapping("/")
