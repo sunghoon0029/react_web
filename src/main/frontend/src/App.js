@@ -11,8 +11,6 @@ import BoardList from './pages/board/BoardList';
 import BoardWrite from './pages/board/BoardWrite';
 import BoardDetail from './pages/board/BoardDetail';
 import BoardUpdate from './pages/board/BoardUpdate';
-import MultipleFileUpload from './components/file/MultipleFileUpload';
-import FileUpload from './components/file/FileUpload';
 
 const App = () => {
 
@@ -30,8 +28,6 @@ const App = () => {
 
           <Route path='/board' element={ <BoardList /> } />
           <Route path='/board/write' element={ <BoardWrite /> } />
-          <Route path='/file' element={ <FileUpload /> } />
-          <Route path='/files' element={ <MultipleFileUpload /> } />
           <Route path='/board/:id' element={ <BoardDetail /> } />
           <Route path='/board/update/:id' element={ <BoardUpdate /> } />
         </Routes>

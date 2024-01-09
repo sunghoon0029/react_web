@@ -13,7 +13,7 @@ const BoardWrite = () => {
 
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
-  const [image, setImage] = useState([]);
+  const [images, setImages] = useState([]);
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -22,38 +22,20 @@ const BoardWrite = () => {
     setContents(e.target.value);
   };
   const onChangeImage = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
+    const selectedImages = Array.from(e.target.files);
+    setImages(selectedImages);
   };
-
-  // const onChangeImages = (e) => {
-  //   const selectedImages = Array.from(e.target.files);
-  //   setImages(selectedImages);
-  // }
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // let body = {
-    //   title: title,
-    //   contents: contents,
-    // };
-
     const formData = new FormData();
 
-    const json = JSON.stringify({ title, contents });
-    const blob = new Blob([json], { type: "application/json" });
+    formData.append('request', new Blob([JSON.stringify({ title, contents })], { type: "application/json" }));
 
-    formData.append('request', blob);
-    formData.append('files', image);
-
-    // for (let i = 0; i < FileElement.files.length; i++) {
-    //   formData.append("files", FileElement.files[i]);
-    // };
-
-    // images.forEach((image, index) => {
-    //   formData.append(`image-${index}`, image);
-    // });
+    images.forEach((image) => {
+      formData.append('image', image);
+    });
 
     try { 
       dispatch(createBoard(formData));
@@ -78,21 +60,21 @@ const BoardWrite = () => {
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control
-                type="title"
-                placeholder="title"
-                value={title}
-                onChange={onChangeTitle}
+              type="title"
+              placeholder="title"
+              value={title}
+              onChange={onChangeTitle}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Contents</Form.Label>
             <Form.Control
-                as="textarea"
-                rows={5}
-                placeholder="contents"
-                value={contents}
-                onChange={onChangeContents}
+              as="textarea"
+              rows={5}
+              placeholder="contents"
+              value={contents}
+              onChange={onChangeContents}
             />
           </Form.Group>
 
