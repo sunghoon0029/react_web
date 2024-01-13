@@ -25,7 +25,7 @@ public class FileService {
     private final FileRepository fileRepository;
 
     @Transactional
-    public void uploadFile(Board board, List<MultipartFile> multipartFiles) throws Exception {
+    public void uploadFile(Board board, List<MultipartFile> multipartFiles) throws FileUploadException {
 
         if (!CollectionUtils.isEmpty(multipartFiles)) {
 

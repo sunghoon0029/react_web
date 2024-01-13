@@ -82,9 +82,8 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new  Exception("게시글 정보를 찾을 수 없습니다."));
         boardRepository.updateHits(board.getId());
-        BoardDetailResponse response = BoardDetailResponse.toDTO(board);
 
-        return response;
+        return BoardDetailResponse.toDTO(board);
     }
 
     public BoardUpdateResponse updateById(Long id, BoardRequest request, CustomUserDetails member) throws Exception {
