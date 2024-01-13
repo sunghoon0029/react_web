@@ -16,7 +16,7 @@ const BoardDetail = () => {
     const { id } = useParams();
 
     const boardData = useSelector(state => state.board);
-    const commentDate = useSelector(state => state.comment);
+    const commentData = useSelector(state => state.comment);
 
     const backToBoardList = () => {
         navigate('/board')
@@ -55,9 +55,26 @@ const BoardDetail = () => {
                     <p>작성일자: {new Date(boardData.board.createdAt).toLocaleString()}</p>
                     <p>조회수: {boardData.board.hits}</p>
 
+                    {boardData.board.files && (
+                        <div>
+                            <p>이미지:</p>
+                            <ul>
+                                {boardData.board.files.map((file) => (
+                                    <li key={file.id}>
+                                        <img
+                                            src={file.filePath}
+                                            alt={file.originalFileName}
+                                            style={{ maxWidth: '100%', height: 'auto' }}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     <CommentForm id={id} />
 
-                    <CommentList comments={commentDate.commentList} />
+                    <CommentList comments={commentData.commentList} />
                 </>
             ) : (
                 <div>Loading...</div>
