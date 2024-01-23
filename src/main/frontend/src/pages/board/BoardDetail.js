@@ -55,22 +55,12 @@ const BoardDetail = () => {
                     <p>작성일자: {new Date(boardData.board.createdAt).toLocaleString()}</p>
                     <p>조회수: {boardData.board.hits}</p>
 
-                    {boardData.board.files && (
-                        <div>
-                            <p>이미지:</p>
-                            <ul>
-                                {boardData.board.files.map((file) => (
-                                    <li key={file.id}>
-                                        <img
-                                            src={file.filePath}
-                                            alt={file.originalFileName}
-                                            style={{ maxWidth: '100%', height: 'auto' }}
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    {boardData.board.fileBytes && boardData.board.fileBytes.map((imageBytes, index) => (
+                        <img
+                            key={index}
+                            src={`data:image/jpeg;base64,${uint8ArrayToBase64(imageBytes)}`}
+                            alt={`Image ${index}`} />
+                    ))}
 
                     <CommentForm id={id} />
 
@@ -87,5 +77,17 @@ const BoardDetail = () => {
     </Layout>
   );
 };
+
+function uint8ArrayToBase64(arrayBuffer) {
+    let binary = '';
+    const bytes = new Uint8Array(arrayBuffer);
+    const len = bytes.byteLength;
+
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+
+    return btoa(binary);
+}
 
 export default BoardDetail;
