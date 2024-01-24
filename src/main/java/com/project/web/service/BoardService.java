@@ -6,6 +6,7 @@ import com.project.web.dto.response.board.BoardListResponse;
 import com.project.web.dto.response.board.BoardUpdateResponse;
 import com.project.web.dto.response.board.BoardWriteResponse;
 import com.project.web.entity.Board;
+import com.project.web.entity.File;
 import com.project.web.entity.Member;
 import com.project.web.repository.BoardRepository;
 import com.project.web.repository.MemberRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,13 +79,37 @@ public class BoardService {
         return boardPage.map(BoardListResponse::toDTO);
     }
 
+//    public BoardDetailResponse findById(Long id) throws Exception {
+//
+//        Board board = boardRepository.findById(id)
+//                .orElseThrow(() -> new  Exception("게시글 정보를 찾을 수 없습니다."));
+//        boardRepository.updateHits(board.getId());
+//
+//        return BoardDetailResponse.toDTO(board);
+//    }
+
+    @Transactional
     public BoardDetailResponse findById(Long id) throws Exception {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new  Exception("게시글 정보를 찾을 수 없습니다."));
         boardRepository.updateHits(board.getId());
 
-        return BoardDetailResponse.toDTO(board);
+        BoardDetailResponse boardDetailResponse = BoardDetailResponse.toDTO(board);
+
+        List<byte[]> fileBytes = new ArrayList<>();
+        for (File file : board.getFiles()) {
+            try {
+                byte[] bytes = FileService.loadImageAsByteArray(file.getFilePath());
+                fileBytes.add(bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        boardDetailResponse.setFileBytes(fileBytes);
+
+        return boardDetailResponse;
     }
 
     public BoardUpdateResponse updateById(Long id, BoardRequest request, CustomUserDetails member) throws Exception {
