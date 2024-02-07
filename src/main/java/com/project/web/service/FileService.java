@@ -51,13 +51,4 @@ public class FileService {
             }
         }
     }
-
-    public static byte[] loadImageAsByteArray(String filePath) throws IOException {
-        java.io.File file = ResourceUtils.getFile("classpath:" + filePath);
-        return Files.readAllBytes(file.toPath());
-    }
-
-    public static String encodeImage(byte[] imageBytes) {
-        return java.util.Base64.getEncoder().encodeToString(imageBytes);
-    }
 }
