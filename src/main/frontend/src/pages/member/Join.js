@@ -109,6 +109,16 @@ const Join = () => {
                     />
                 </Form.Group>
 
+                {/* <Form.Group className="mb-3">
+                    <Form.Label>생년월일</Form.Label>
+                    <Form.DatePicker
+                        selected={birth}
+                        onChange={ onChangeBirth }
+                        dateFormat="yyyy.MM.dd"
+                        placeholderText="YYYYY.MM.DD"
+                    />
+                </Form.Group> */}
+
                 <Form.Group className="mb-3">
                     <Form.Label>성별</Form.Label>
                     <Form.Control
@@ -117,8 +127,8 @@ const Join = () => {
                         onChange={ onChangeGender }
                     >
                         <option value="">선택</option>
-                        <option value="Male">남자</option>
-                        <option value="Female">여자</option>
+                        <option value="Male">남성</option>
+                        <option value="Female">여성</option>
                     </Form.Control>
                 </Form.Group>
 

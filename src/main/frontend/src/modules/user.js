@@ -14,6 +14,8 @@ const REGISTER_USER = 'REGISTER_USER';
 const LOGIN_USER = 'LOGIN_USER';
 const LOGOUT_USER = 'LOGOUT_USER';
 const GET_USER = 'GET_USER';
+const UPDATE_USER = 'UPDATE_USER';
+const DELETE_USER = 'DELETE_USER';
 
 const accessToken = localStorage.getItem('accessToken');
 
@@ -92,14 +94,55 @@ export const logoutUser = () => dispatch => {
 //     }
 // };
 
-export const getUser = (id) => async dispatch => {
+export const getUser = () => async dispatch => {
     try {
-        const response = await axios.get(USER_URL + `member/${id}`, {headers});
+        const response = await axios.get(USER_URL + 'member/profile', {headers});
 
         console.log(response);
 
         dispatch ({
             type: GET_USER,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
+// export const getUser = (id) => async dispatch => {
+//     try {
+//         const response = await axios.get(USER_URL + `member/${id}`, {headers});
+
+//         console.log(response);
+
+//         dispatch ({
+//             type: GET_USER,
+//             payload: response.data,
+//         });
+//     } catch (error) {
+//         console.error(error);
+//     };
+// };
+
+export const updateUser = (dataToSubmit) => async dispatch => {
+    try {
+        const response = await axios.put(USER_URL + 'member/profile/edit', dataToSubmit, {headers});
+
+        dispatch ({
+            type: UPDATE_USER,
+            payload: response.data,
+        });
+    } catch (error) {
+        console.error(error);
+    };
+};
+
+export const deleteUser = () => async dispatch => {
+    try {
+        const response = await axios.delete(USER_URL + 'member/delete', {headers});
+
+        dispatch ({
+            type: DELETE_USER,
             payload: response.data,
         });
     } catch (error) {
@@ -137,6 +180,17 @@ export default function reducer(state = initalState, action) {
                 ...state,
                 user: action.payload,
             };
+        case UPDATE_USER:
+            return {
+                ...state,
+                user: action.payload,
+            };
+        case DELETE_USER:
+            return {
+                ...state,
+                user: action.payload,
+                isLoggedIn: false,
+            }
         default:
             return state;
     };

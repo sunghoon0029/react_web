@@ -19,7 +19,7 @@ const BoardDetail = () => {
     const commentData = useSelector(state => state.comment);
 
     const backToBoardList = () => {
-        navigate('/board')
+        navigate('/board');
     };
 
     const moveToUpdate = () => {
@@ -50,17 +50,22 @@ const BoardDetail = () => {
             {boardData.board ? (
                 <>
                     <h2>{boardData.board.title}</h2>
-                    <p>{boardData.board.member}</p>
-                    <p>{boardData.board.contents}</p>
+                    <p>작성자: {boardData.board.member}</p>
                     <p>작성일자: {new Date(boardData.board.createdAt).toLocaleString()}</p>
                     <p>조회수: {boardData.board.hits}</p>
+                    <p>{boardData.board.contents}</p>
 
-                    {boardData.board.fileBytes && boardData.board.fileBytes.map((imageBytes, index) => (
-                        <img
-                            key={index}
-                            src={`data:image/jpeg;base64,${uint8ArrayToBase64(imageBytes)}`}
-                            alt={`Image ${index}`} />
-                    ))}
+                    {boardData.board.fileUrls && (
+                        <div>
+                            {boardData.board.fileUrls.map((url, index) => (
+                                <img
+                                    key={index}
+                                    src={url}
+                                    alt={`이미지 ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                     <CommentForm id={id} />
 
@@ -77,17 +82,5 @@ const BoardDetail = () => {
     </Layout>
   );
 };
-
-function uint8ArrayToBase64(arrayBuffer) {
-    let binary = '';
-    const bytes = new Uint8Array(arrayBuffer);
-    const len = bytes.byteLength;
-
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-
-    return btoa(binary);
-}
 
 export default BoardDetail;
